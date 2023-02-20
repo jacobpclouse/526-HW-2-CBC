@@ -14,10 +14,10 @@ This program will impliment:
 '''
 
 # GOALS for Development:
-# 1st: get the CBC program working, then OFB program working
-# 2nd: 
-# 3rd: 
-# 4th: 
+# 1st: figure out how to encrypt with AES (just one step) - ie: how to XOR and what you get as output
+# 2nd: figure out how to take that output, store it, then use it again in the same encryption
+# 3rd: make sure that you can still decrypt this
+# 4th: figure out how to run it N times and still decrypt it
 # 5th: 
 # 6th: 
 
