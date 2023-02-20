@@ -58,9 +58,45 @@ def defang_datetime():
     
     return current_datetime
 
+# --- Function to break down data into 128 bit blocks - REFACTOR ---
+def break_it_down(input_data):
+    block_size = 16  # 16 bytes = 128 bits
+    num_blocks = (len(input_data) + block_size - 1) // block_size  # calculate number of blocks
+    blocks = []
+    for i in range(num_blocks):
+        block_start = i * block_size
+        block_end = block_start + block_size
+        block = input_data[block_start:block_end]
+        if len(block) < block_size:
+            # pad the last block with zeroes if necessary
+            block += bytes(block_size - len(block))
+        blocks.append(int.from_bytes(block, 'big'))
+
+    print(f"Number of Blocks: {blocks}")
+    return blocks
+
+
+
+# --- Function to Encrypt CBC ---
+def encrypt_cbc(datetime,plaintext,key,iv):
+    # Initialize Encryption Function
+    print(f"Starting CBC Encryption at: {datetime}")
+
+    # Creating Array to Store Ciphertext
+    encryption_ciphertext = []
+
+
+
+
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # MAIN PROGRAM
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 
+# Grabbing DateTime
+grab_time = defang_datetime()
+
+# need to have the b before the string 
+testVar = b'break it down boi'
+break_it_down(testVar)
