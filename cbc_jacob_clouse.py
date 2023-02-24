@@ -25,8 +25,14 @@ This program will impliment:
 # Importing Libraries / Modules 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-import datetime # used to get the datetime for "defang_datetime" function
+import datetime
+from operator import xor # used to get the datetime for "defang_datetime" function
 import random # IV generation use
+
+from Crypto.Cipher import AES # AES Encryption Functions
+from Crypto.Random import get_random_bytes # AES Encryption Functions
+from Crypto.Util.Padding import pad, unpad
+
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Variables
@@ -45,7 +51,6 @@ def myLogo():
     print(" /\_/ / (_| | (_| (_) | |_) | / /___| | (_) | |_| \__ \  __/ ")
     print(" \___/ \__,_|\___\___/|_.__/  \____/|_|\___/ \__,_|___/\___| ")
     print("Dedicated to Peter Zlomek and Harley Alderson III")
-
 
 # --- Function to Defang date time ---
 def defang_datetime():
@@ -81,24 +86,23 @@ def return_binary_to_string(input_binary_data):
     return original_string
 
 
-# --- Function to break down data into 128 bit blocks - REFACTOR ---
-def break_it_down(input_data):
-    block_size = 16  # 16 bytes = 128 bits
-    num_blocks = (len(input_data) + block_size - 1) // block_size  # calculate number of blocks
-    blocks = []
-    for i in range(num_blocks):
-        block_start = i * block_size
-        block_end = block_start + block_size
-        block = input_data[block_start:block_end]
-        if len(block) < block_size:
-            # pad the last block with zeroes if necessary
-            block += bytes(block_size - len(block))
-        blocks.append(int.from_bytes(block, 'big'))
+# --- Function for AES Encryption - from: https://onboardbase.com/blog/aes-encryption-decryption/
+def encrypt_AES(data):
+    key = get_random_bytes(16)
+    cipher = AES.new(key, AES.MODE_EAX)
+    # cipher = AES.new(key, AES.MODE_ECB)
+    ciphertext, tag = cipher.encrypt_and_digest(data)
+    nonce = cipher.nonce
+    return ciphertext, key, tag, nonce
 
-    print(f"Number of Blocks: {blocks}")
-    return blocks
+#  --- Function for AES Decryption - from: https://onboardbase.com/blog/aes-encryption-decryption/
+def decrypt_AES(ciphertext,key,tag,nonce):
+    cipher = AES.new(key, AES.MODE_EAX, nonce)
+    # cipher = AES.new(key, AES.MODE_ECB, nonce)
+    data = cipher.decrypt_and_verify(ciphertext, tag)
+    return data
 
-
+'''
 # --- Function to Generate IV  ---
 def generate_IV(plaintext):
     # will take in input from user outside of function and then pass it in
@@ -112,18 +116,37 @@ def generate_IV(plaintext):
     # Convert IV to binary numbers
     converted_IV = convert_string_to_binary(IV_key)
     return IV_key, converted_IV
-
+'''
 
 # --- Function to Encrypt CBC --- are we going to divide up the blocks beforehand or inside of this? number of rounds determined by the plaintext
-def encrypt_cbc(datetime,plaintext,iv):
+def encrypt_cbc(datetime,plaintext):
     # Initialize Encryption Function
     print(f"Starting CBC Encryption at: {datetime}")
 
-    # BRING IN THE WHOLE PLAINTEXT AND ITERATE THROUGH IT INSIDE THIS FUNCTION
+    # Pad Plaintext bytes object
+    padded_plaintext = pad(plaintext.encode('utf-8'), AES.block_size)
+    arrayOfPlaintext = []
 
-    # setting this up so we can keep IV and still update value 
-    cipher_XOR_Value = iv
-    lengthOfPlaintext = len(plaintext)  # need to have converted this to the binary rep beforehand
+
+    numberOfLinks = int(len(padded_plaintext.decode('utf-8'))) # should be a multiple of 8
+    intial_val = 0 
+    end_val = 16
+
+    # break into array of 16 letter chunks
+    for i in range(numberOfLinks):
+        print(i)
+    
+
+
+    # get length of padded plaintext and then make a random IV of bytes
+    # my_iv = get_random_bytes(AES.block_size)
+
+    # SPLIT UP BLOCK OF DATA INTO BLOCKS OF 16 HERE, FEED EACH ONE THROUGH WITH IV ()
+
+   # setting this up so we can keep IV and still update value 
+    cipher_XOR_Value = my_iv
+
+    lengthOfPlaintext = len(padded_plaintext)  # need to have converted this to the binary rep beforehand
     lengthOfXOR = len(cipher_XOR_Value)
     After_XOR = ''
 
@@ -131,16 +154,23 @@ def encrypt_cbc(datetime,plaintext,iv):
         print(f"Blocks are both {lengthOfXOR}, can procceed")
 
         # XOR function
-        for index, character in enumerate(plaintext):
+        for index, character in enumerate(padded_plaintext):
             corresponding_value = cipher_XOR_Value[index]
             # print(f"{character} at index {index}, XOR Value: {corresponding_value}")
             # print(f"Type character: {type(character)}, type XOR {type(corresponding_value)}, Int Char {type(int(character))}")
             After_XOR += str(int(character) ^ int(corresponding_value))
 
-        print(f"After XOR: {After_XOR}")
+        After_XOR_to_bytes = After_XOR.encode('utf-8')
+        print(f"After XOR: {After_XOR}, bytes: {After_XOR_to_bytes}")
 
-        # AES encryption
         
+
+        
+
+        # AES encryption - not good!
+        my_ciphertext, my_key, my_tag, my_nonce = encrypt_AES(After_XOR.encode('utf-8')) # need to encode before AES
+        print(my_ciphertext)
+
 
 
         cipher_XOR_Value = After_XOR # Setting new IV to the value of the
@@ -170,22 +200,24 @@ def encrypt_cbc(datetime,plaintext,iv):
 # Grabbing DateTime
 grab_time = defang_datetime()
 
+
+# setting plaintext
+our_plaintext = "J"
+
+encrypt_cbc(grab_time,our_plaintext)
+
+
 # need to have the b before the string 
 #testVar = b'break it down boi'
 #break_it_down(testVar)
 
-# setting plaintext
-our_plaintext = "J"
 # converting plaintext to binary
-binary_plaintext = convert_string_to_binary(our_plaintext)
+#binary_plaintext = convert_string_to_binary(our_plaintext)
 # generating IV of same length as our plaintext
-string_IV_key, binary_IV_Key = generate_IV(our_plaintext)
+# string_IV_key, binary_IV_Key = generate_IV(our_plaintext)
 
-print(f"binary_plaintext: {binary_plaintext}, Binary IV: {binary_IV_Key}")
-encrypt_cbc(grab_time, binary_plaintext, binary_IV_Key)
-
-
-
+#print(f"binary_plaintext: {binary_plaintext}, Binary IV: {binary_IV_Key}")
+#encrypt_cbc(grab_time, binary_plaintext, binary_IV_Key)
 
 
 
