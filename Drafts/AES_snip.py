@@ -5,7 +5,7 @@ toEncrypt = b'secret data'
 
 # from: https://onboardbase.com/blog/aes-encryption-decryption/
 
-# Encryption
+# --- Function for AES Encryption - from: https://onboardbase.com/blog/aes-encryption-decryption/
 def encrypt_AES(data):
     key = get_random_bytes(16)
     cipher = AES.new(key, AES.MODE_EAX)
@@ -13,7 +13,7 @@ def encrypt_AES(data):
     nonce = cipher.nonce
     return ciphertext, key, tag, nonce
 
-# Decryption
+#  --- Function for AES Decryption - from: https://onboardbase.com/blog/aes-encryption-decryption/
 def decrypt_AES(ciphertext,key,tag,nonce):
     cipher = AES.new(key, AES.MODE_EAX, nonce)
     data = cipher.decrypt_and_verify(ciphertext, tag)
