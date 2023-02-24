@@ -57,29 +57,26 @@ def defang_datetime():
     
     return current_datetime
 
-# --- Function to turn plaintext/ciphertext String into binary  ---    # below is a snipit from GeeksForGeeks:
+# --- Function to turn plaintext/ciphertext String into binary  ---
 def convert_string_to_binary(input_string):
     print("Converting String to Binary: \n")
-    # Encode the string into bytes using utf-8 encoding
-    bytes = input_string.encode('utf-8')
-    # Convert each byte to its binary representation
-    binary = [bin(byte)[2:].zfill(8) for byte in bytes]
-    # Join the binary representations of each byte into a single string
-    binary_string = ''.join(binary)
-    return(binary_string)
+    # below is a snipit from GeeksForGeeks:
+    converted_bits = ''.join(format(ord(i), '08b') for i in input_string)
+    # returning Data
+    return converted_bits
 
-# --- Function to turn binary into plaintext/ciphertext string ---    # below is a snipit from GeeksForGeeks:
+# --- Function to turn binary into plaintext/ciphertext string ---
 def return_binary_to_string(input_binary_data):
     print("Returning Binary to String: \n")
-    # Split the binary string into a list of 8-bit binary representations
-    binary_list = [input_binary_data[i:i+8] for i in range(0, len(input_binary_data), 8)]
-    # Convert each binary representation to its decimal equivalent
-    decimal_list = [int(binary, 2) for binary in binary_list]
-    # Convert the sequence of decimal values back to the original string
-    byte_string = bytes(decimal_list)
-    original_string = byte_string.decode('utf-8')
-    return original_string
-
+    # below is a snipit from GeeksForGeeks:
+    returned_string = ''
+    for i in range(0, len(input_binary_data), 7):
+        # cutting up 8 bit chunks
+        temp_data = input_binary_data[i:i + 7]
+        decimal_data = int(temp_data, 2)
+        returned_string = returned_string  + chr(decimal_data)
+    # returning Data
+    return returned_string 
 
 
 # --- Function to break down data into 128 bit blocks - REFACTOR ---
