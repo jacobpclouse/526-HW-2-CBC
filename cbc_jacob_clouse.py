@@ -81,7 +81,6 @@ def return_binary_to_string(input_binary_data):
     return original_string
 
 
-
 # --- Function to break down data into 128 bit blocks - REFACTOR ---
 def break_it_down(input_data):
     block_size = 16  # 16 bytes = 128 bits
@@ -110,22 +109,57 @@ def generate_IV(plaintext):
         current_key_value = str(random.randint(0,9))
         IV_key += current_key_value
         #print(f"Letter: {letters}, Key value: {current_key_value}")
-    # return IV as value
-    return IV_key
+    # Convert IV to binary numbers
+    converted_IV = convert_string_to_binary(IV_key)
+    return IV_key, converted_IV
 
 
-# --- Function to Encrypt CBC ---
-def encrypt_cbc(datetime,plaintext,key,iv):
+# --- Function to Encrypt CBC --- are we going to divide up the blocks beforehand or inside of this? number of rounds determined by the plaintext
+def encrypt_cbc(datetime,plaintext,iv):
     # Initialize Encryption Function
     print(f"Starting CBC Encryption at: {datetime}")
 
+    # BRING IN THE WHOLE PLAINTEXT AND ITERATE THROUGH IT INSIDE THIS FUNCTION
+
+    # setting this up so we can keep IV and still update value 
+    cipher_XOR_Value = iv
+    lengthOfPlaintext = len(plaintext)  # need to have converted this to the binary rep beforehand
+    lengthOfXOR = len(cipher_XOR_Value)
+    After_XOR = ''
+
+    if(lengthOfPlaintext == lengthOfXOR):
+        print(f"Blocks are both {lengthOfXOR}, can procceed")
+
+        # XOR function
+        for index, character in enumerate(plaintext):
+            corresponding_value = cipher_XOR_Value[index]
+            # print(f"{character} at index {index}, XOR Value: {corresponding_value}")
+            # print(f"Type character: {type(character)}, type XOR {type(corresponding_value)}, Int Char {type(int(character))}")
+            After_XOR += str(int(character) ^ int(corresponding_value))
+
+        print(f"After XOR: {After_XOR}")
+
+        # AES encryption
+        
+
+
+        cipher_XOR_Value = After_XOR # Setting new IV to the value of the
+
+
+    
+    else:
+        print("Error: Length of Plaintext Block and Length of XOR block do not match.")
+
+
     # Creating Array to Store Ciphertext
-    encryption_ciphertext = []
+    #encryption_ciphertext = []
 
 
 # 1 - break it down - just do each part of cbc seperatly, xoring, etc
 # 2 - try it with one block, check output, write decryption for one block, check output
 # 3 - try adding more blocks, one by one, see if it works, etc
+# BE WARY OF DIVIDING UP THE MESSAGE - take note of when you do it and how you do it
+
 
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -140,11 +174,23 @@ grab_time = defang_datetime()
 #testVar = b'break it down boi'
 #break_it_down(testVar)
 
-#our_IV_key = generate_IV("TestmeyoujerkIlovethisjob")
-#print(our_IV_key)
-input_String = 'Geeks'
-converted = convert_string_to_binary(input_String)
-print(converted)
+# setting plaintext
+our_plaintext = "J"
+# converting plaintext to binary
+binary_plaintext = convert_string_to_binary(our_plaintext)
+# generating IV of same length as our plaintext
+string_IV_key, binary_IV_Key = generate_IV(our_plaintext)
 
-reverted = return_binary_to_string(converted)
-print(reverted)
+print(f"binary_plaintext: {binary_plaintext}, Binary IV: {binary_IV_Key}")
+encrypt_cbc(grab_time, binary_plaintext, binary_IV_Key)
+
+
+
+
+
+
+# input_String = 'l2'
+# converted = convert_string_to_binary(input_String)
+# print(converted)
+# reverted = return_binary_to_string(converted)
+# print(reverted)
