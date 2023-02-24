@@ -8,3 +8,4 @@ The second homework for ICSI 526 in Spring 2023
 - How to convert Python string to bytes?: https://flexiple.com/python/python-string-to-bytes/
 - Python | Convert String to Binary: https://www.geeksforgeeks.org/python-convert-string-to-binary/
 - Convert binary to string using Python: https://www.geeksforgeeks.org/convert-binary-to-string-using-python/
+- AES Encryption & Decryption In Python: Implementation, Modes & Key Management: https://onboardbase.com/blog/aes-encryption-decryption/
