@@ -5,6 +5,10 @@ AES Python Code used: https://github.com/boppreh/aes
 
 # Resources Used:
 - How to Execute and Run Java Code from the Terminal: https://www.freecodecamp.org/news/how-to-execute-and-run-java-code/
+- Generate Random numbers with Java: https://www.geeksforgeeks.org/generating-random-numbers-in-java/
+- Fill an array with random numbers: https://www.tutorialspoint.com/generate-a-random-array-of-integers-in-java
+- lossy conversion from int to byte? [duplicate]: https://stackoverflow.com/questions/28623477/lossy-conversion-from-int-to-byte
+
 
 
 

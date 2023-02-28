@@ -229,6 +229,15 @@ public class AES {
   }
   return r;
  }
+// -------- MY CBC --------
+public static byte JPC_CBC_MODE(byte a, byte b) {
+
+ }
+
+// -------- MY OFB --------
+public static byte JPC_OFB_MODE(byte a, byte b) {
+
+ }
 
 // THIS LOOKS LIKE THE ENCRYPTION BLOCK FUNCTION WHERE ALL SUB FUNCTIONS COMBINE!!!!
 // INDIVIDUAL BLOCKS THO
@@ -308,7 +317,8 @@ public class AES {
    padding[i] = 0;
 
   byte[] tmp = new byte[in.length + lenght];  
-  byte[] bloc = new byte[16];       
+  byte[] bloc = new byte[16];
+  // length of the IV Needs to be 16 bytes it looks like        
   
   
   w = generateSubkeys(key);
