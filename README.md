@@ -17,3 +17,4 @@ AES Python Code used: https://github.com/boppreh/aes
 - AES Encryption & Decryption In Python: Implementation, Modes & Key Management: https://onboardbase.com/blog/aes-encryption-decryption/
 - How can I do a binary encoding of a string in python?: https://stackoverflow.com/questions/12175417/how-can-i-do-a-binary-encoding-of-a-string-in-python
 - Simple Python example of AES in ECB mode: https://gist.github.com/h0rn3t/4216cf787b43060b5afc2d50086918bc
+- Pure Python AES: https://github.com/boppreh/aes
