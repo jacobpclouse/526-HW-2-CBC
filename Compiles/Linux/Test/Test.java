@@ -7,7 +7,7 @@ public class Test {
     public static void main(String[] args){
         System.out.println("CBC Test");
         
-        Random rd = new Random(); // creating Random object
+        Random rd = new Random(); // creating Random object, setting max and min to 0 and 9
             int max=9,min=0;
 
         // generate new array of block size 16 - empty
