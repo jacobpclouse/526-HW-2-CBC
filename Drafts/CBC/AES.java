@@ -4,6 +4,10 @@
 //package crypto.assignment.two;
 
 // you need to rename this back to AES.java before you compile
+import java.util.Random;
+import java.io.*;
+import java.util.*;
+import java.security.SecureRandom;
 
 public class AES {
 
@@ -229,16 +233,6 @@ public class AES {
   }
   return r;
  }
-// -------- MY CBC --------
-public static byte JPC_CBC_MODE(byte a, byte b) {
-
- }
-
-// -------- MY OFB --------
-public static byte JPC_OFB_MODE(byte a, byte b) {
-
- }
-
 // THIS LOOKS LIKE THE ENCRYPTION BLOCK FUNCTION WHERE ALL SUB FUNCTIONS COMBINE!!!!
 // INDIVIDUAL BLOCKS THO
  public static byte[] encryptBloc(byte[] in) {
@@ -298,7 +292,7 @@ public static byte JPC_OFB_MODE(byte a, byte b) {
  }
  
 
- // MAIN - full encryption function??
+ // MAIN - full encryption function?? - can add another var to read and then activate if it is true
  public static byte[] encrypt(byte[] in,byte[] key){
   
   Nb = 4;
@@ -318,16 +312,38 @@ public static byte JPC_OFB_MODE(byte a, byte b) {
 
   byte[] tmp = new byte[in.length + lenght];  
   byte[] bloc = new byte[16];
-  // length of the IV Needs to be 16 bytes it looks like        
-  
-  
+  // length of the IV Needs to be 16 bytes it looks like   
+
+  // ----- MY CODE -------------     
+  Random rd = new Random(); // creating Random object, setting max and min to 0 and 9
+    int max=9,min=0;
+
+  // generate new array of block size 16 - empty
+  byte[] IV = new byte[16]; // needs to be set outside of the block, cant be called twice ***
+  // byte[] XORed_IV = new byte[16]; // needs to be set outside of the block, cant be called twice ***
+
+  // generate random numbers and assign them to the array
+  for (int j = 0; j < IV.length; j++) {
+    IV[j] = (byte) (rd.nextInt(max - min + 1) + min); // storing random integers in an array -- need to be 0 - 9
+    System.out.println(IV[j]); // printing each array element
+  }
+
+ 
   w = generateSubkeys(key);
   
   int count = 0;
 
   for (i = 0; i < in.length + lenght; i++) {
    if (i > 0 && i % 16 == 0) {
+    // XOR function: MY CODE
+    for (int a = 0; a < bloc.length; a++) {
+        bloc[a] = (byte) (bloc[a] ^ IV[a]);
+    }
     bloc = encryptBloc(bloc);
+    // Override the Initial IV value and XORED Value
+    for (int b = 0; b < bloc.length; b++) {
+        IV[b] = (byte) (bloc[b]); // Overide Orig Value
+    }
     System.arraycopy(bloc, 0, tmp, i - 16, bloc.length);
    }
    if (i < in.length)

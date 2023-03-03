@@ -29,6 +29,10 @@ public class Test {
 
         System.out.println(IV); // print out array at end
 
+
+
+
+
         // XOR function: 
         for (int i = 0; i < IV.length; i++) {
             XORed_IV[i] = (byte) (IV[i] ^ IV[i]);
