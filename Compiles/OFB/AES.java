@@ -314,18 +314,17 @@ public class AES {
   byte[] bloc = new byte[16];
   // length of the IV Needs to be 16 bytes it looks like   
 
-  // ----- MY CODE -------------     
+  // ----- MY CODE -------------    
+  System.out.println("OFB by Jacob Clouse");  // Start setup of XOR
   Random rd = new Random(); // creating Random object, setting max and min to 0 and 9
     int max=9,min=0;
 
   // generate new array of block size 16 - empty
   byte[] IV = new byte[16]; // needs to be set outside of the block, cant be called twice ***
-  // byte[] XORed_IV = new byte[16]; // needs to be set outside of the block, cant be called twice ***
 
   // generate random numbers and assign them to the array
   for (int j = 0; j < IV.length; j++) {
     IV[j] = (byte) (rd.nextInt(max - min + 1) + min); // storing random integers in an array -- need to be 0 - 9
-    System.out.println(IV[j]); // printing each array element
   }
 
  
@@ -339,7 +338,13 @@ public class AES {
     for (int a = 0; a < bloc.length; a++) {
         bloc[a] = (byte) (bloc[a] ^ IV[a]);
     }
+
+    // Encrypt 
     bloc = encryptBloc(bloc);
+    //bloc = encryptBloc(bloc);
+
+
+
     // Override the Initial IV value and XORED Value
     for (int b = 0; b < bloc.length; b++) {
         IV[b] = (byte) (bloc[b]); // Overide Orig Value
