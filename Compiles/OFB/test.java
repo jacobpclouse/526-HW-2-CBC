@@ -15,9 +15,9 @@ public class test {
         System.out.println(key_integer);
         // generate random numbers and assign them to the array - Set before encrypt for loop
         for (int b = 0; b < 100; b++) {
-            key_integer = 000000000000;
-            key_integer += b;
-            key_String = String.format("%020d", key_integer);
+            // key_integer = 000000000000;
+            // key_integer += b;
+            key_String = String.format("%020d", b);
             System.out.println("");
             System.out.println(key_integer);
             System.out.println(key_String);
