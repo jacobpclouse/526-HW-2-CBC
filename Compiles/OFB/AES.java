@@ -320,12 +320,18 @@ public class AES {
     int max=9,min=0;
 
   // generate new array of block size 16 - empty
-  byte[] IV = new byte[16]; // needs to be set outside of the block, cant be called twice ***
-
-  // generate random numbers and assign them to the array
-  for (int j = 0; j < IV.length; j++) {
-    IV[j] = (byte) (rd.nextInt(max - min + 1) + min); // storing random integers in an array -- need to be 0 - 9
+  byte[] IV_Noonce = new byte[16]; // needs to be set outside of the block, cant be called twice ***
+  byte[] Counter_for_Noonce = new byte[16]; // needs to be set outside of the block, cant be called twice ***
+  int current_Val = 0;
+  String String_Noonce = new String();
+  // generate random numbers and assign them to the array - Set before encrypt for loop
+  for (int b = 0; b < IV_Noonce.length; b++) {
+      current_Val = (rd.nextInt(max - min + 1) + min);
+      IV_Noonce[b] = (byte) (current_Val); // storing random integers in an array -- need to be 0 - 9
+      String_Noonce += current_Val;
   }
+  // Convert Nonce to integers for our incriment operation + string 
+  long Long_Noonce = Long.parseLong(String_Noonce);
 
  
   w = generateSubkeys(key);
@@ -334,21 +340,30 @@ public class AES {
 
   for (i = 0; i < in.length + lenght; i++) {
    if (i > 0 && i % 16 == 0) {
-    // XOR function: MY CODE
-    for (int a = 0; a < bloc.length; a++) {
-        bloc[a] = (byte) (bloc[a] ^ IV[a]);
-    }
+    System.out.println("Hit OFB");
+    // Getting current index to sync our counter, converting from string to bytes and cutting it at 16
+    Long_Noonce += i;
+    // System.out.println(Long_Noonce);
+    String_Noonce = String.format("%016d", Long_Noonce);
+    // System.out.println(String_Noonce);
+    IV_Noonce = String_Noonce.getBytes();
+    IV_Noonce = Arrays.copyOf(IV_Noonce, 16);
+    // System.out.println(IV_Noonce);
+
 
     // Encrypt 
-    bloc = encryptBloc(bloc);
-    //bloc = encryptBloc(bloc);
+    IV_Noonce = encryptBloc(IV_Noonce);
+    //bloc = encryptBloc(bloc); // orig
 
-
-
-    // Override the Initial IV value and XORED Value
-    for (int b = 0; b < bloc.length; b++) {
-        IV[b] = (byte) (bloc[b]); // Overide Orig Value
+    
+    // XOR function: 
+    for (int a = 0; a < bloc.length; a++) {
+        bloc[a] = (byte) (IV_Noonce[a] ^ bloc[a]);
+        // System.out.println(a);
     }
+
+
+
     System.arraycopy(bloc, 0, tmp, i - 16, bloc.length);
    }
    if (i < in.length)

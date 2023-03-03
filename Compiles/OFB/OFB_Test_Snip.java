@@ -36,6 +36,7 @@ public class OFB_Test_Snip {
         byte[] bloc = Arrays.copyOf(IV_Noonce,16);
         System.out.println("BLOCK: ");
         System.out.println(bloc);
+        // END SAMPLE - do not include
 
 
         // Simulated encrypt block
@@ -52,20 +53,19 @@ public class OFB_Test_Snip {
             System.out.println(IV_Noonce);
 
             // ENCRYPTION HERE
-            // block encrypt (IV_NONCE, key)
+            // encrypt function (IV_NONCE, key)
 
 
            
-            // Math.min(a, b);
             // XOR function: Reverse
             for (int a = 0; a < bloc.length; a++) {
-                IV_Noonce[a] = (byte) (IV_Noonce[a] ^ bloc[a]);
+                bloc[a] = (byte) (IV_Noonce[a] ^ bloc[a]);
                 System.out.println(a);
             }
 /*
 */
             // SET NEW IV TO output from the encryption
-            System.out.println(' ');
+            System.out.println('Done!');
             
 
 
