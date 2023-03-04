@@ -210,13 +210,18 @@ public class ImageHiding extends JFrame implements ActionListener
 class Steganography
 {
  BufferedImage image;
-
+// FOR ORIG IMAGE (IE HOST IMAGE) -- should be LSB ORIG
  public void getMaskedImage(int bits)
  {
   int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
 
+
+// LSB
   int maskBits = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
   int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+// --- 
+
+
 
   for (int i = 0; i < imageRGB.length; i++)
   {
@@ -230,16 +235,24 @@ class Steganography
 // encoded image being passed in looks to always be the secret image
  public void encode(BufferedImage encodeImage, int encodeBits)
  {
+  // SHOULD BE MSB
   int[] encodeRGB = encodeImage.getRGB(0, 0, encodeImage.getWidth(null), encodeImage.getHeight(null), null, 0, encodeImage.getWidth(null));
   int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
-
-// BELOW IS IT!!! MSB S to LSB H
+  System.out.println("  Encoded RGB: " + encodeRGB);
+  System.out.println("    Image RGB: " + imageRGB);
+// BELOW IS IT!!! MSB S 
   int encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
   int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+  System.out.println("encodeByteMask: " + encodeByteMask);
+  System.out.println("    encodeMask: " + encodeMask);
 
   int decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
   int hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
-// --- 
+  System.out.println("decodeByteMask: " + decodeByteMask);
+  System.out.println("      hostMask: " + hostMask);
+  System.out.println(" ");
+
+// --- HAVE IT PRINT OUT THE VALUES BEFORE AND AFTER SHIFT SO YOU SEE WHAT IS GOING ON
 
   for (int i = 0; i < imageRGB.length; i++)
   {
