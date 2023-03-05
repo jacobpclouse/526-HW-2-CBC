@@ -145,6 +145,61 @@ public class ImageHiding extends JFrame implements ActionListener
   imagePanel = new JPanel();
   imagePanel.setLayout(imageGridbag);
 
+
+
+  // my code----------------------
+  ButtonGroup group1 = new ButtonGroup();
+  // Create two radio buttons and add them to the ButtonGroup and JPanel
+  JRadioButton radioButton1a = new JRadioButton("MSB of S");
+  JRadioButton radioButton1b = new JRadioButton("LSB of S");
+  radioButton1a.setSelected(true); // Set the default selection to radioButton1a
+  group1.add(radioButton1a);
+  group1.add(radioButton1b);
+  imagePanel.add(radioButton1a);
+  imagePanel.add(radioButton1b);
+
+    // Add an ItemListener to the first radio button field to detect when a radio button is selected
+  ItemListener listener1 = new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        // Print the selected radio button's text to the console
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            System.out.println("Selected option from radio button field 1: " + ((JRadioButton) e.getSource()).getText());
+        }
+      }
+  };
+  radioButton1a.addItemListener(listener1);
+  radioButton1b.addItemListener(listener1);
+
+
+
+
+
+    // Create a new ButtonGroup for the second radio button field
+  ButtonGroup group2 = new ButtonGroup();
+
+  // Create two radio buttons and add them to the ButtonGroup and JPanel
+  JRadioButton radioButton2a = new JRadioButton("MSB of H");
+  JRadioButton radioButton2b = new JRadioButton("LSB of H");
+  radioButton2a.setSelected(true); // Set the default selection to radioButton2a
+  group2.add(radioButton2a);
+  group2.add(radioButton2b);
+  imagePanel.add(radioButton2a);
+  imagePanel.add(radioButton2b);
+
+  // Add an ItemListener to the second radio button field to detect when a radio button is selected
+  ItemListener listener2 = new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        // Print the selected radio button's text to the console
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            System.out.println("Selected option from radio button field 2: " + ((JRadioButton) e.getSource()).getText());
+        }
+      }
+  };
+  radioButton2a.addItemListener(listener2);
+  radioButton2b.addItemListener(listener2);
+// - --  -- 
+
+
   JLabel hostImageLabel = new JLabel("Host image:");
   JLabel secretImageLabel = new JLabel("Secret image:");
 
