@@ -1,0 +1,1 @@
+The index of coincidence for .\ECB\ecb_50_bz.txt is: 0.03179889944972486
