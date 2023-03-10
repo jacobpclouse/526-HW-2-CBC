@@ -38,6 +38,7 @@ public class AES_Demo extends javax.swing.JFrame {
 
   
     public AES_Demo() {
+        this.setTitle("Jacob Clouse CBC Demo: ");
         initComponents();
     }
 
