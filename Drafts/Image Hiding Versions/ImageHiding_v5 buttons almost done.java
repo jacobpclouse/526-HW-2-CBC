@@ -30,7 +30,7 @@ public class ImageHiding extends JFrame implements ActionListener {
 
   JRadioButton hostIsLSBButton, hostIsMSBButton, secretIsLSBButton, secretIsMSBButton;
   ButtonGroup hostButtonGroup, secretButtonGroup;
-  public boolean HostIsLSBVar = true, SecretIsLSBVar = true;
+  boolean HostIsLSBVar = true, SecretIsLSBVar = true;
 
   Steganography s;
 
@@ -76,13 +76,13 @@ public class ImageHiding extends JFrame implements ActionListener {
       encodeBitsText.setText(Integer.toString(bits));
 
       s = new Steganography(this.getHostImage());
-      s.encode(this.getSecretImage(), bits,SecretIsLSBVar);
+      s.encode(this.getSecretImage(), bits);
 
       hostCanvas.setImage(s.getImage());
       hostCanvas.repaint();
 
       s = new Steganography(this.getSecretImage());
-      s.getMaskedImage(bits,HostIsLSBVar);
+      s.getMaskedImage(bits);
 
       secretCanvas.setImage(s.getImage());
       secretCanvas.repaint();
@@ -96,13 +96,13 @@ public class ImageHiding extends JFrame implements ActionListener {
       encodeBitsText.setText(Integer.toString(bits));
 
       s = new Steganography(this.getHostImage());
-      s.encode(this.getSecretImage(), bits,SecretIsLSBVar);
+      s.encode(this.getSecretImage(), bits);
 
       hostCanvas.setImage(s.getImage());
       hostCanvas.repaint();
 
       s = new Steganography(this.getSecretImage());
-      s.getMaskedImage(bits,HostIsLSBVar);
+      s.getMaskedImage(bits);
 
       secretCanvas.setImage(s.getImage());
       secretCanvas.repaint();
@@ -112,15 +112,12 @@ public class ImageHiding extends JFrame implements ActionListener {
     if ("HostLSB".equals(actionBoi)) {
       HostIsLSBVar = true;
       System.out.println("Case 1: HOSTLBS TRUE!");
-
     } else if ("HostMSB".equals(actionBoi)) {
       HostIsLSBVar = false;
       System.out.println("Case 2: HOSTLBS FALSE!");
-
     } else if ("SecretLSB".equals(actionBoi)) {
       SecretIsLSBVar = true;
       System.out.println("Case 3: SECRETLBS TRUE!");
-
     } else if ("SecretMSB".equals(actionBoi)) {
       SecretIsLSBVar = false;
       System.out.println("Case 4: SECRETLBS FALSE!");
@@ -216,11 +213,11 @@ public class ImageHiding extends JFrame implements ActionListener {
     this.add(imagePanel);
 
     Steganography host = new Steganography(this.getHostImage());
-    host.encode(this.getSecretImage(), this.getBits(),SecretIsLSBVar);
+    host.encode(this.getSecretImage(), this.getBits());
     hostCanvas.setImage(host.getImage());
 
     Steganography secret = new Steganography(this.getSecretImage());
-    secret.getMaskedImage(this.getBits(),HostIsLSBVar);
+    secret.getMaskedImage(this.getBits());
     secretCanvas.setImage(secret.getImage());
 
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -255,22 +252,19 @@ public class ImageHiding extends JFrame implements ActionListener {
 
 class Steganography {
   BufferedImage image;
-  // boolean currentHostLSB;
-  // boolean currentSecretLSB;
 
-  public void getMaskedImage(int bits, boolean currentHostLSB) // part 1 HOST
+  public void getMaskedImage(int bits) // part 1 HOST
   {
     int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
-    
-    // System.out.println("HOST LSB: " + currentHostLSB);
+
     // my code
-    // Scanner myObj = new Scanner(System.in);
-    // System.out.println("___________________________");
-    // System.out.println("*Part 1: Setting Host bits*");
-    // System.out.println("(true or false) HOST is LSB: ");
-    // boolean myHostBits = myObj.nextBoolean();
+    Scanner myObj = new Scanner(System.in);
+    System.out.println("___________________________");
+    System.out.println("*Part 1: Setting Host bits*");
+    System.out.println("(true or false) HOST is LSB: ");
+    boolean myHostBits = myObj.nextBoolean();
     // this is working!!! LSB or MSB
-    if (currentHostLSB == true) {
+    if (myHostBits == true) {
       System.out.println("HOST is LSB - orig");
       // LSB
       int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits);
@@ -279,7 +273,7 @@ class Steganography {
         imageRGB[i] = imageRGB[i] & mask;
       }
       image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
-    } else if (currentHostLSB == false) {
+    } else if (myHostBits == false) {
       System.out.println("HOST is NOT LSB (its MSB)");
       // MSB - MY CODE
       int maskBits = (int) (Math.pow(2, bits)) - 1;
@@ -289,22 +283,37 @@ class Steganography {
       }
       image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
     }
+
+    /*
+     * // original code below:
+     * // int maskBits = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
+     * // int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) |
+     * maskBits;
+     * 
+     * // for (int i = 0; i < imageRGB.length; i++)
+     * // {
+     * // imageRGB[i] = imageRGB[i] & mask;
+     * // }
+     * 
+     * // image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB,
+     * 0, image.getWidth(null));
+     */
   }
 
-  public void encode(BufferedImage encodeImage, int encodeBits, boolean currentSecretLSB) // part 2
+  public void encode(BufferedImage encodeImage, int encodeBits) // part 2
   {
     int[] encodeRGB = encodeImage.getRGB(0, 0, encodeImage.getWidth(null), encodeImage.getHeight(null), null, 0,
         encodeImage.getWidth(null));
     int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
 
     // my code
-    // Scanner myObj2 = new Scanner(System.in);
-    // System.out.println("___________________________");
-    // System.out.println("^Part 2: Setting Secret bits^");
-    // System.out.println("(true or false) SECRET is LSB: ");
-    // boolean mySecretBits = myObj2.nextBoolean();
+    Scanner myObj2 = new Scanner(System.in);
+    System.out.println("___________________________");
+    System.out.println("^Part 2: Setting Secret bits^");
+    System.out.println("(true or false) SECRET is LSB: ");
+    boolean mySecretBits = myObj2.nextBoolean();
 
-    if (currentSecretLSB == true) {
+    if (mySecretBits == true) {
       System.out.println("SECRET is LSB");
       // LSB - MY CODE
       int encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1;
@@ -317,7 +326,7 @@ class Steganography {
       }
       image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
 
-    } else if (currentSecretLSB == false) {
+    } else if (mySecretBits == false) {
       // MSB - orig
       System.out.println("SECRET is NOT LSB (its MSB - orig)");
       int encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
