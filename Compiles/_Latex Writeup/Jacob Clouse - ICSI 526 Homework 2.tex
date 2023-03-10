@@ -1,0 +1,127 @@
+\documentclass[10pt]{article}
+\usepackage{fullpage}
+\usepackage{amsmath,amsfonts,amsthm}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{hhline}
+
+\graphicspath{{./imgs/} {./imgs/Q1/} {./imgs/Q2/}}
+
+% these are compressed lists to help fit into a 1 page limit
+\newenvironment{enumerate*}%
+  {\vspace{-2ex} \begin{enumerate} %
+     \setlength{\itemsep}{-1ex} \setlength{\parsep}{0pt}}%
+  {\end{enumerate}}
+ 
+\newenvironment{itemize*}%
+  {\vspace{-2ex} \begin{itemize} %
+     \setlength{\itemsep}{-1ex} \setlength{\parsep}{0pt}}%
+  {\end{itemize}}
+ 
+\newenvironment{description*}%
+  {\vspace{-2ex} \begin{description} %
+     \setlength{\itemsep}{-1ex} \setlength{\parsep}{0pt}}%
+  {\end{description}}
+
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\let\Pr\relax
+\DeclareMathOperator*{\Pr}{\mathbb{P}}
+
+\newcommand{\inprod}[1]{\left\langle #1 \right\rangle}
+\newcommand{\eqdef}{\mathbin{\stackrel{\rm def}{=}}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\author{Jacob Clouse}
+\title{Spring 2023 - ICSI 526\\Homework $2$}
+
+\begin{document}
+
+\maketitle
+
+\section{Running CBC and OFB modes, Calculating the IOC}
+\noindent There are two separate AES files included: One contains my code for CBC mode and the other contains my code for OFB mode. I couldn't get them to work together inside of the same file so I had to split them out into different programs. NOTE: This program was mainly coded on a Linux Mint machine using BASH to compile and Git/Github to host my code (using a private git repo).
+\vspace{0.2in}
+\\
+\noindent \textbf{How to Compile and Run CBC Mode: } 
+\begin{enumerate}
+	\item Make sure you have a working copy of the Java JDK and a text editor on your machine (I use VS Code because of the built in terminal).
+	\item Make a copy of the \textbf{CBC} folder I have provided and cd into it with your terminal. The ONLY two items you should have inside are the \textbf{AES.java} and \textbf{AES\_Demo.java} files (the demo is required to run this program).
+	\item You can compile the program by using the syntax: \begin{verbatim}
+		javac AES_Demo.java AES.java
+	\end{verbatim}
+	This should create a several class files within the \textbf{CBC} folder, including a \text{AES\_Demo.class} file.
+	\item 
+\end{enumerate}
+
+\vspace{0.2in}
+\resizebox{1.0\textwidth}{!}{
+\begin{tabular}{|p{1cm}|c|c|}
+	\hline
+	\multicolumn{1}{|c|}{\textbf{Mode}} & \multicolumn{1}{c|}{\textbf{\% Dup}} & \multicolumn{1}{c|}{\textbf{IOC}} \\
+	\hline
+	
+	\multirow{3}{.75cm}{ECB} 
+	& 0\% & 0.01995247623811906 \\
+	\cline{2-3}
+	& 25\% & 0.024443221610805404 \\
+	\cline{2-3}
+	& 50\% & 0.03179889944972486 \\
+	\hline
+	
+	\multirow{3}{.75cm}{CBC} 
+	& 0\% & 0.003902951475737869 \\
+	\cline{2-3}
+	& 25\% & 0.003873936968484242 \\
+	\cline{2-3}
+	& 50\% & 0.003944972486243122 \\
+	\hline
+	
+	\multirow{3}{.75cm}{OFB} 
+	& 0\% & 0.00392896448224112 \\
+	\cline{2-3}
+	& 25\% & 0.003864432216108054 \\
+	\cline{2-3}
+	& 50\% & 0.003921960980490245 \\
+	\hline
+\end{tabular}
+}
+
+
+\noindent \textbf{Problem 1} can be efficiently solved by ...
+
+
+\vspace{1in}
+
+
+
+
+
+
+
+\if false
+Theorem~\ref{th:root} is stated below. Its proof follows.
+
+\begin{theorem}
+	The square root of $2$ is irrational.
+	\label{th:root}
+\end{theorem}
+
+\begin{proof}
+For the sake of contradiction suppose $\sqrt{2}$ is rational. Write $\sqrt{2} = a/b$ with $a,b$ positive integers with gcd $1$. Then $2 = a^2/b^2$, so $a = 2k$ is even. Then $2 = 4k^2/b^2$ so that $b = 2k^2$, implying $b$ is even. This contradicts that $a,b$ have gcd $1$.
+\end{proof}
+
+Some random facts in a list:
+
+\begin{itemize*}
+	\item Compared with the ``itemize'' environment in \LaTeX, itemize$^*$ has smaller separation between bullet points.
+	\item If $\pi(x)$ is the number of primes less than or equal to $x$, then
+$\lim_{x\rightarrow\infty} \frac{\pi(x)}{x/\ln(x)} = 1$.
+	\item Here is a numbered equation on a separate line 
+	\begin{equation}
+		\sum_{\substack{1\le i\le 2n\\i\ \mathrm{even}}} i = \frac{2n(n+1)}2
+	\end{equation}
+\end{itemize*}
+\fi
+\end{document}
