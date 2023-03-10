@@ -41,7 +41,7 @@
 \maketitle
 
 \section{Running CBC and OFB modes, Calculating the IOC}
-\noindent There are two separate AES files included: One contains my code for CBC mode and the other contains my code for OFB mode. I couldn't get them to work together inside of the same file so I had to split them out into different programs. NOTE: This program was mainly coded on a Linux Mint machine using BASH to compile and Git/Github to host my code (using a private git repo).
+\noindent There are two separate AES files included: One contains my code for CBC mode and the other contains my code for OFB mode. I couldn't get them to work together inside of the same file so I had to split them out into different programs. NOTE: This program was mainly coded on a Linux Mint machine using BASH to compile and Git/Github to host my code (using a private git repo). Running CBC and OFB modes are almost identical, but I have included instructions for both here for the sake of completeness. 
 \vspace{0.2in}
 \\
 \noindent \textbf{How to Compile and Run CBC Mode: } 
@@ -66,8 +66,31 @@
 	\item Finally, you can click \text{Begin AES} and it will encrypt your file (there is no decryption in this file, so the 'Encryption Time' and  'Decryption Time' fields may be blank). You now have your encrypted output and you repeat the process to encrypt other files as you please.
 
 \end{enumerate}
-
 \vspace{0.2in}
+\noindent \textbf{How to Compile and Run OFB Mode: } 
+\begin{enumerate}
+	\item Make sure you have a working copy of the Java JDK and a text editor on your machine (I use VS Code because of the built in terminal). If you have already run CBC mode, then you should be all set.
+	
+	\item Make sure you have x3 test files of 2000 characters each (with 0\%, 25\% and 50\% duplication respectively). Again, you can just reuse the same input files from CBC mode. 
+	
+	\item Make a copy of the \textbf{OFB} folder I have provided and cd into it with your terminal. The ONLY two items you should have inside are the \textbf{AES.java} and \textbf{AES\_Demo.java} files (the demo is required to run this program).
+	
+	\item You can compile the program by using the syntax: \begin{verbatim} javac AES_Demo.java AES.java \end{verbatim}
+	This should create a several class files within the \textbf{OFB} folder, including a \text{AES\_Demo.class} file.
+	
+	\item Now you can run this file using the syntax: 
+	\begin{verbatim} java AES_Demo \end{verbatim} 
+	If successful, a window should pop up titled \textbf{Jacob Clouse OFB Demo:} that will allow you to select your sample data files. 
+	
+	\item You can use the \textit{Browse Files} button and navigate to the first test file on your computer. \textbf{DO NOT} select either 'Preserve Image Header' or 'Reduced AES - 4 rounds'. 
+	
+	\item You can select where you want the encrypted output file to go using the \textbf{Choose Save Directory} button. \textbf{NOTE:} On linux, I have noticed that the output file sometimes will be stored in the parent directory of the folder you initially selected. 
+	
+	\item Finally, you can click \text{Begin AES} and it will encrypt your file (there is no decryption in this file, so the 'Encryption Time' and  'Decryption Time' fields may be blank). You now have your encrypted output and you repeat the process to encrypt other files as you please.
+	
+\end{enumerate}
+\vspace{0.2in}
+
 \resizebox{1.0\textwidth}{!}{
 \begin{tabular}{|p{1cm}|c|c|}
 	\hline
