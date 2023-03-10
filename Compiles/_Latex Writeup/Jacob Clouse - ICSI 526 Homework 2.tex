@@ -48,6 +48,8 @@
 \begin{enumerate}
 	\item Make sure you have a working copy of the Java JDK and a text editor on your machine (I use VS Code because of the built in terminal).
 	
+	\item Make sure you have x3 test files of 2000 characters each (with 0\%, 25\% and 50\% duplication respectively).
+	
 	\item Make a copy of the \textbf{CBC} folder I have provided and cd into it with your terminal. The ONLY two items you should have inside are the \textbf{AES.java} and \textbf{AES\_Demo.java} files (the demo is required to run this program).
 	
 	\item You can compile the program by using the syntax: \begin{verbatim} javac AES_Demo.java AES.java \end{verbatim}
@@ -55,9 +57,13 @@
 	
 	\item Now you can run this file using the syntax: 
 	\begin{verbatim} java AES_Demo \end{verbatim} 
-	If successful, a window should pop up that will allow you to select your sample data. 
+	If successful, a window should pop up titled \textbf{Jacob Clouse CBC Demo:} that will allow you to select your sample data files. 
 	
-	\item 
+	\item You can use the \textit{Browse Files} button and navigate to the first test file on your computer. \textbf{DO NOT} select either 'Preserve Image Header' or 'Reduced AES - 4 rounds'. 
+	
+	\item You can select where you want the encrypted output file to go using the \textbf{Choose Save Directory} button. \textbf{NOTE:} On linux, I have noticed that the output file sometimes will be stored in the parent directory of the folder you initially selected. 
+	
+	\item Finally, you can click \text{Begin AES} and it will encrypt your file (there is no decryption in this file, so the 'Encryption Time' and  'Decryption Time' fields may be blank). You now have your encrypted output and you repeat the process to encrypt other files as you please.
 
 \end{enumerate}
 
