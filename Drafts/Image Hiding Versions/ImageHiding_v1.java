@@ -80,7 +80,6 @@ public class ImageHiding extends JFrame implements ActionListener
 
    s = new Steganography(this.getSecretImage());
    s.getMaskedImage(bits);
-  // s.getMaskedImage(bits,this.radioButton1b()); // changed -- added radioButton 1b
 
    secretCanvas.setImage(s.getImage());
    secretCanvas.repaint();
@@ -101,8 +100,6 @@ public class ImageHiding extends JFrame implements ActionListener
 
    s = new Steganography(this.getSecretImage());
    s.getMaskedImage(bits);
-  // s.getMaskedImage(bits,this.radioButton1b()); // changed -- added radioButton 1b
-
 
    secretCanvas.setImage(s.getImage());
    secretCanvas.repaint();
@@ -203,8 +200,8 @@ public class ImageHiding extends JFrame implements ActionListener
 // - --  -- 
 
 
-  JLabel hostImageLabel = new JLabel("Host image On Left");
-  JLabel secretImageLabel = new JLabel("Secret image On Right");
+  JLabel hostImageLabel = new JLabel("Host image:");
+  JLabel secretImageLabel = new JLabel("Secret image:");
 
   imagePanel.add(hostImageLabel);
 
@@ -228,7 +225,6 @@ public class ImageHiding extends JFrame implements ActionListener
 
   Steganography secret = new Steganography(this.getSecretImage());
   secret.getMaskedImage(this.getBits());
-  // secret.getMaskedImage(this.getBits(),this.radioButton1b()); // changed -- added radioButton 1b
   secretCanvas.setImage(secret.getImage());
 
   this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -274,29 +270,11 @@ class Steganography
  {
   int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
 
-  // LSB
-    System.out.println("We know that radio button 1b is selected and LSB of H is being executed");
-    int maskBits = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
-    int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
 
-
-
-// // if lsb button is selected
-//   if (ImageHiding.radioButton1b.isSelected()) {
-//   // LSB
-//     System.out.println("We know that radio button 1b is selected and LSB of H is being executed");
-//     int maskBits = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
-//     int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
-//   // --- 
-//   } else {
-//     // MSB - My code
-//     System.out.println("ELSE radio button 1a is selected and MSB of H is being executed");
-//     int maskBits = (int)(Math.pow(2, bits)) - 1;
-//     int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
-//   };
-
-
-
+// LSB
+  int maskBits = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
+  int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+// --- 
 
 
 

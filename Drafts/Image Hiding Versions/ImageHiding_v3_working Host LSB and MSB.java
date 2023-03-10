@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
+import java.util.Scanner;  // Import the Scanner class
+
 public class ImageHiding extends JFrame implements ActionListener
 {
  BufferedImage hostImage;
@@ -80,7 +82,6 @@ public class ImageHiding extends JFrame implements ActionListener
 
    s = new Steganography(this.getSecretImage());
    s.getMaskedImage(bits);
-  // s.getMaskedImage(bits,this.radioButton1b()); // changed -- added radioButton 1b
 
    secretCanvas.setImage(s.getImage());
    secretCanvas.repaint();
@@ -101,8 +102,6 @@ public class ImageHiding extends JFrame implements ActionListener
 
    s = new Steganography(this.getSecretImage());
    s.getMaskedImage(bits);
-  // s.getMaskedImage(bits,this.radioButton1b()); // changed -- added radioButton 1b
-
 
    secretCanvas.setImage(s.getImage());
    secretCanvas.repaint();
@@ -148,63 +147,8 @@ public class ImageHiding extends JFrame implements ActionListener
   imagePanel = new JPanel();
   imagePanel.setLayout(imageGridbag);
 
-
-
-  // my code----------------------
-  ButtonGroup group1 = new ButtonGroup();
-  // Create two radio buttons and add them to the ButtonGroup and JPanel
-  JRadioButton radioButton1a = new JRadioButton("MSB of S");
-  JRadioButton radioButton1b = new JRadioButton("LSB of S");
-  radioButton1a.setSelected(true); // Set the default selection to radioButton1a
-  group1.add(radioButton1a);
-  group1.add(radioButton1b);
-  imagePanel.add(radioButton1a);
-  imagePanel.add(radioButton1b);
-
-    // Add an ItemListener to the first radio button field to detect when a radio button is selected
-  ItemListener listener1 = new ItemListener() {
-      public void itemStateChanged(ItemEvent e) {
-        // Print the selected radio button's text to the console
-        if (e.getStateChange() == ItemEvent.SELECTED) {
-            System.out.println("Selected option from radio button field 1: " + ((JRadioButton) e.getSource()).getText());
-        }
-      }
-  };
-  radioButton1a.addItemListener(listener1);
-  radioButton1b.addItemListener(listener1);
-
-
-
-
-
-    // Create a new ButtonGroup for the second radio button field
-  ButtonGroup group2 = new ButtonGroup();
-
-  // Create two radio buttons and add them to the ButtonGroup and JPanel
-  JRadioButton radioButton2a = new JRadioButton("MSB of H");
-  JRadioButton radioButton2b = new JRadioButton("LSB of H");
-  radioButton2a.setSelected(true); // Set the default selection to radioButton2a
-  group2.add(radioButton2a);
-  group2.add(radioButton2b);
-  imagePanel.add(radioButton2a);
-  imagePanel.add(radioButton2b);
-
-  // Add an ItemListener to the second radio button field to detect when a radio button is selected
-  ItemListener listener2 = new ItemListener() {
-      public void itemStateChanged(ItemEvent e) {
-        // Print the selected radio button's text to the console
-        if (e.getStateChange() == ItemEvent.SELECTED) {
-            System.out.println("Selected option from radio button field 2: " + ((JRadioButton) e.getSource()).getText());
-        }
-      }
-  };
-  radioButton2a.addItemListener(listener2);
-  radioButton2b.addItemListener(listener2);
-// - --  -- 
-
-
-  JLabel hostImageLabel = new JLabel("Host image On Left");
-  JLabel secretImageLabel = new JLabel("Secret image On Right");
+  JLabel hostImageLabel = new JLabel("Host image:");
+  JLabel secretImageLabel = new JLabel("Secret image:");
 
   imagePanel.add(hostImageLabel);
 
@@ -228,7 +172,6 @@ public class ImageHiding extends JFrame implements ActionListener
 
   Steganography secret = new Steganography(this.getSecretImage());
   secret.getMaskedImage(this.getBits());
-  // secret.getMaskedImage(this.getBits(),this.radioButton1b()); // changed -- added radioButton 1b
   secretCanvas.setImage(secret.getImage());
 
   this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -269,67 +212,77 @@ public class ImageHiding extends JFrame implements ActionListener
 class Steganography
 {
  BufferedImage image;
-// FOR ORIG IMAGE (IE HOST IMAGE) -- should be LSB ORIG
- public void getMaskedImage(int bits)
+
+ public void getMaskedImage(int bits) // part 1 HOST
  {
   int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
 
-  // LSB
-    System.out.println("We know that radio button 1b is selected and LSB of H is being executed");
+// my code
+  Scanner myObj = new Scanner(System.in);
+  System.out.println("___________________________");
+  System.out.println("*Part 1: Setting Host bits*");
+  System.out.println("(true or false) HOST is LSB: ");
+  boolean myHostBits = myObj.nextBoolean();
+// this is working!!! LSB or MSB
+  if (myHostBits == true) {
+    System.out.println("HOST is LSB");
+    // LSB
     int maskBits = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
     int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
-
-
-
-// // if lsb button is selected
-//   if (ImageHiding.radioButton1b.isSelected()) {
-//   // LSB
-//     System.out.println("We know that radio button 1b is selected and LSB of H is being executed");
-//     int maskBits = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
-//     int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
-//   // --- 
-//   } else {
-//     // MSB - My code
-//     System.out.println("ELSE radio button 1a is selected and MSB of H is being executed");
-//     int maskBits = (int)(Math.pow(2, bits)) - 1;
-//     int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
-//   };
-
-
-
-
-
-
-  for (int i = 0; i < imageRGB.length; i++)
-  {
-   imageRGB[i] = imageRGB[i] & mask;
-  }
-
-  image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+    for (int i = 0; i < imageRGB.length; i++)
+    {
+      imageRGB[i] = imageRGB[i] & mask;
+    }
+    image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+ } else if (myHostBits == false) {
+    System.out.println("HOST is NOT LSB");
+    // MSB - MY CODE
+    int maskBits = (int)(Math.pow(2, bits)) - 1;
+    int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+    for (int i = 0; i < imageRGB.length; i++)
+    {
+      imageRGB[i] = imageRGB[i] & mask;
+    }
+    image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
  }
-// PRETTY SURE ITS BELOW FOR LSB / MSB -- original does: Hide MSB of Secret in LSB of Host
-// HE CALLED OUT ENCODE IN CLASS AS THE ONE YOU SHOULD FOCUS ON
-// encoded image being passed in looks to always be the secret image
- public void encode(BufferedImage encodeImage, int encodeBits)
+
+/*
+  // original code below: 
+  // int maskBits = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
+  // int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+
+  //   for (int i = 0; i < imageRGB.length; i++)
+  //   {
+  //    imageRGB[i] = imageRGB[i] & mask;
+  //   }
+
+  //   image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+*/
+}
+
+ public void encode(BufferedImage encodeImage, int encodeBits) // part 2
  {
-  // SHOULD BE MSB
   int[] encodeRGB = encodeImage.getRGB(0, 0, encodeImage.getWidth(null), encodeImage.getHeight(null), null, 0, encodeImage.getWidth(null));
   int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
-  System.out.println("  Encoded RGB: " + encodeRGB);
-  System.out.println("    Image RGB: " + imageRGB);
-// BELOW IS IT!!! MSB S 
+
+// my code
+  Scanner myObj2 = new Scanner(System.in);
+  System.out.println("___________________________");
+  System.out.println("^Part 2: Setting Secret bits^");
+  System.out.println("(true or false) SECRET is LSB: ");
+  boolean mySecretBits = myObj2.nextBoolean();
+
+  if (mySecretBits == true) {
+    System.out.println("LSB are true");
+  } else if (mySecretBits == false) {
+    System.out.println("LSB are FALSE");
+  }
+// -- 
   int encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
   int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-  System.out.println("encodeByteMask: " + encodeByteMask);
-  System.out.println("    encodeMask: " + encodeMask);
 
   int decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
   int hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
-  System.out.println("decodeByteMask: " + decodeByteMask);
-  System.out.println("      hostMask: " + hostMask);
-  System.out.println(" ");
-
-// --- HAVE IT PRINT OUT THE VALUES BEFORE AND AFTER SHIFT SO YOU SEE WHAT IS GOING ON
 
   for (int i = 0; i < imageRGB.length; i++)
   {
