@@ -127,13 +127,47 @@ Within my CBC implementation, there is very little difference between the result
 \vspace{0.2in}\\
 \section{Running Extended Image Hiding Program:}
 \noindent When I modified this code, I again wanted to reuse the framework that was provided to me in the original application. I made a copy of the original file and added a few touches to the GUI and choices for MSB and LSB. Basically, I added two new radio button groups: hostButtonGroup and secretButtonGroup. These two groups affect the two new boolean variables I created: HostIsLSBVar and SecretIsLSBVar (both are initialized as true). What happens is that we are using these two groups to update the true false values of our two variables. \\ 
-If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. If it equals HostMSB, then we update HostIsLSBVar to equal false. Same thing with secretButtonGroup, where if it equals SecretLSB then SecretIsLSBVar is true and if it equals SecretMSB then SecretIsLSBVar is false. 
-
-
-\vspace{1in}
-
-
-
+If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. If it equals HostMSB, then we update HostIsLSBVar to equal false. Same thing with secretButtonGroup, where if it equals SecretLSB then SecretIsLSBVar is true and if it equals SecretMSB then SecretIsLSBVar is false. \\
+\vspace{0.2in} \\
+\noindent \textbf{How to Compile and Run Image Hiding: } 
+\begin{enumerate}
+	\item Make sure you have a working copy of the Java JDK and a text editor on your machine (I use VS Code because of the built in terminal). Again, you should have this if you did the CBC and OFB portions.
+	
+	\item Make a copy of the \textbf{Image Hiding Extended} folder I have provided and cd into it with your terminal. The ONLY items you should have inside are the \textbf{ImageHiding.java} file and the original picture files that were provided (host and secret).
+	
+	\item You can compile the program by using the syntax: \begin{verbatim} javac ImageHiding.java \end{verbatim}
+	This should create a several class files within the \textbf{Image Hiding Extended} folder, including a \text{ImageHiding.class} file.
+	
+	\item Now you can run this file using the syntax: 
+	\begin{verbatim} java ImageHiding \end{verbatim} 
+	If successful, a window should pop up titled \textbf{Jacob Clouse Image Hiding:} that will allow you adjust the MSB and LSB of the pictures. 
+	
+	\item The window that pops up will have all the buttons that the original demo did (ie: the Window that shows you current encoded bits, a + button to add more, a - button to remove more, and two displays showing the host and secret images).\\ \textbf{HOWEVER}, there are now x4 radio buttons present. You can select If you want to use the MSB or LSB of the Host image to hide your values (one or the other, not both). In combination with that, we can chose to encode either the MSB or LSB of the Secret image. Both default to LSB, so you can adjust them to the two choices you need.
+	
+	\item After you have made your selection, just hit either the + or - button and it will start encoding using the settings that you have selected.
+\end{enumerate}
+\vspace{0.2in}
+\noindent \textbf{Results of Image Hiding Extension: } I found that the results from my adjustment to the Image Hiding Program seem to differ from the original program in the way the distortion shows up in both images. The original program took the MSB of the Secret Image and hid it within the LSB of the Host Image. When you added more bits to the encoded image, the color palette seemed to skew more towards red and the secret image was identifiable even at around 3 or 4 encode bits. Here are all the stages to the original encoding: \\
+\includegraphics[scale=.7]{default_0.png}\\
+\includegraphics[scale=.7]{default_1.png}\\
+\includegraphics[scale=.7]{default_2.png}\\
+\includegraphics[scale=.7]{default_3.png}\\
+\includegraphics[scale=.7]{default_4.png}\\
+\includegraphics[scale=.7]{default_5.png}\\
+\includegraphics[scale=.7]{default_6.png}\\
+\includegraphics[scale=.7]{default_7.png}\\
+\includegraphics[scale=.7]{default_8.png}\\
+\vspace{0.2in} \\
+But when we reversed and instead hide the LSB of the Secret Image in the MSB of the Host Image, we get results that are not recognizable until past the halfway point. The colors are cooler in the Secret Image as well:\\
+\includegraphics[scale=.7]{opp_0.png}\\
+\includegraphics[scale=.7]{opp_1.png}\\
+\includegraphics[scale=.7]{opp_2.png}\\
+\includegraphics[scale=.7]{opp_3.png}\\
+\includegraphics[scale=.7]{opp_4.png}\\
+\includegraphics[scale=.7]{opp_5.png}\\
+\includegraphics[scale=.7]{opp_6.png}\\
+\includegraphics[scale=.7]{opp_7.png}\\
+\includegraphics[scale=.7]{opp_8.png}\\
 
 
 
