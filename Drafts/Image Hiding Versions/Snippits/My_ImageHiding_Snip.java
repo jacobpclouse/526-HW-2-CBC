@@ -1,4 +1,4 @@
-lass Steganography
+class Steganography
 {
  BufferedImage image;
 // FOR ORIG IMAGE (IE HOST IMAGE) -- should be LSB ORIG
