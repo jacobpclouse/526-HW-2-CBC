@@ -40,7 +40,7 @@
 
 \maketitle
 
-\section{Running CBC and OFB modes, Calculating the IOC}
+\section{Running CBC and OFB modes:}
 \noindent There are two separate AES files included: One contains my code for CBC mode and the other contains my code for OFB mode. I couldn't get them to work together inside of the same file so I had to split them out into different programs. NOTE: This program was mainly coded on a Linux Mint machine using BASH to compile and Git/Github to host my code (using a private git repo). Running CBC and OFB modes are almost identical, but I have included instructions for both here for the sake of completeness. 
 \vspace{0.2in}
 \\
@@ -90,7 +90,9 @@
 	
 \end{enumerate}
 \vspace{0.2in}
-
+\section{My Index of Coincidence Table:}
+\noindent I created this table by feeding the encrypted files into a python IoC Calculator. With ECB, you can clearly see that that the IoC is much higher in the 50\% shared character file vs the 0\% shared file. Even the 25\% shared file is much higher than baseline and it demonstrates that ECB just is not secure enough to warrant use. \\
+Within my CBC implementation, there is very little difference between the results of the 0\%, 25\% and 50\% shared character files. This does an adequate job of diffusing our output and making it look much more like random noise. The same can be said for my OFB implementation too, where we see practically identical levels of IoC across the files.\\
 \resizebox{1.0\textwidth}{!}{
 \begin{tabular}{|p{1cm}|c|c|}
 	\hline
@@ -121,10 +123,11 @@
 	& 50\% & 0.003921960980490245 \\
 	\hline
 \end{tabular}
-}
-
-
-\noindent \textbf{Problem 1} can be efficiently solved by ...
+}\\
+\vspace{0.2in}\\
+\section{Running Extended Image Hiding Program:}
+\noindent When I modified this code, I again wanted to reuse the framework that was provided to me in the original application. I made a copy of the original file and added a few touches to the GUI and choices for MSB and LSB. Basically, I added two new radio button groups: hostButtonGroup and secretButtonGroup. These two groups affect the two new boolean variables I created: HostIsLSBVar and SecretIsLSBVar (both are initialized as true). What happens is that we are using these two groups to update the true false values of our two variables. \\ 
+If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. If it equals HostMSB, then we update HostIsLSBVar to equal false. Same thing with secretButtonGroup, where if it equals SecretLSB then SecretIsLSBVar is true and if it equals SecretMSB then SecretIsLSBVar is false. 
 
 
 \vspace{1in}
