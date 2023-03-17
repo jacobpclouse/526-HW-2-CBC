@@ -290,8 +290,7 @@ class Steganography {
   public void getMaskedImage(int bits, boolean currentHostLSB, boolean isDebugOn) // part 1 HOST
   {
     int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
-/**/  
-
+/* This part of Steganography shouldn't affect anything, but I figured I would give it a try just in case, just turn off debug mode to skip this */  
     if (isDebugOn == false) {
     // This is how it should be run - pradeep said that we don't need to edit this
       System.out.println("Original Config: getMaskedImage");
@@ -406,6 +405,11 @@ class Steganography {
 // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 
 /*
+    System.out.println("SECRET is NOT LSB (its MSB - orig)");
+    int encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
+    int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+
+
 // -------------------------------------------------------------------------------------------------------------
 	// // int decodeByteMask;
 	// // if (useLSB) {
