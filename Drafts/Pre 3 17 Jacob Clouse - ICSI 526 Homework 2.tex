@@ -147,14 +147,7 @@ If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. 
 	\item After you have made your selection, just hit either the + or - button and it will start encoding using the settings that you have selected.
 \end{enumerate}
 \vspace{0.2in}
-\noindent \textbf{Results of Image Hiding Extension: } I found that the results from my adjustment to the Image Hiding Program seem
-
-
-
-
-\if false
-\noindent \textbf{Results of Image Hiding Extension: } I found that the results from my adjustment to the Image Hiding Program seem to differ from the original program in the way the distortion shows up in both images. The original program took the MSB of the Secret Image and hid it within the LSB of the Host Image. When you added more bits to the encoded image, the color palette seemed to skew more towards red and the secret image was identifiable even at around 3 or 4 encode bits.
-Here are all the stages to the original encoding: \\
+\noindent \textbf{Results of Image Hiding Extension: } I found that the results from my adjustment to the Image Hiding Program seem to differ from the original program in the way the distortion shows up in both images. The original program took the MSB of the Secret Image and hid it within the LSB of the Host Image. When you added more bits to the encoded image, the color palette seemed to skew more towards red and the secret image was identifiable even at around 3 or 4 encode bits. Here are all the stages to the original encoding: \\
 \includegraphics[scale=.7]{default_0.png}\\
 \includegraphics[scale=.7]{default_1.png}\\
 \includegraphics[scale=.7]{default_2.png}\\
@@ -178,5 +171,29 @@ But when we reversed and instead hide the LSB of the Secret Image in the MSB of 
 
 
 
+
+\if false
+Theorem~\ref{th:root} is stated below. Its proof follows.
+
+\begin{theorem}
+	The square root of $2$ is irrational.
+	\label{th:root}
+\end{theorem}
+
+\begin{proof}
+For the sake of contradiction suppose $\sqrt{2}$ is rational. Write $\sqrt{2} = a/b$ with $a,b$ positive integers with gcd $1$. Then $2 = a^2/b^2$, so $a = 2k$ is even. Then $2 = 4k^2/b^2$ so that $b = 2k^2$, implying $b$ is even. This contradicts that $a,b$ have gcd $1$.
+\end{proof}
+
+Some random facts in a list:
+
+\begin{itemize*}
+	\item Compared with the ``itemize'' environment in \LaTeX, itemize$^*$ has smaller separation between bullet points.
+	\item If $\pi(x)$ is the number of primes less than or equal to $x$, then
+$\lim_{x\rightarrow\infty} \frac{\pi(x)}{x/\ln(x)} = 1$.
+	\item Here is a numbered equation on a separate line 
+	\begin{equation}
+		\sum_{\substack{1\le i\le 2n\\i\ \mathrm{even}}} i = \frac{2n(n+1)}2
+	\end{equation}
+\end{itemize*}
 \fi
 \end{document}
