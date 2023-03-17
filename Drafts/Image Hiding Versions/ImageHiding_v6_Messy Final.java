@@ -343,6 +343,7 @@ class Steganography {
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
 		decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+		// }
     }		
 	
     // apply the encoding mask to the secret image pixel data
@@ -367,8 +368,63 @@ class Steganography {
 	// output the result
     image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
 // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-
 /*
+	// calculate the mask for encoding and decoding based on the case number
+	int encodeByteMask, encodeMask, decodeByteMask, hostMask;
+	switch (caseNum) {
+		case 1:
+			// case 1: hide MSB of secret image in LSB of host image
+			encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits); // MSB for Secret Image
+			encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+			decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+			hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+			break;
+
+		case 2:
+			// case 2: hide MSB of secret image in MSB of host image
+			encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits); // MSB for Secret Image
+			encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+			decodeByteMask = 0xFF << (8 - encodeBits);
+			hostMask = decodeByteMask << 24 | decodeByteMask << 16 | decodeByteMask << 8 | decodeByteMask;
+			break;
+
+		case 3:
+			// case 3: hide LSB of secret image in LSB of host image
+			encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1; // LSB for Secret Image
+			encodeMask = encodeByteMask << (8 - encodeBits);
+			decodeByteMask = ~encodeByteMask;
+			hostMask = decodeByteMask << 24 | decodeByteMask << 16 | decodeByteMask << 8 | decodeByteMask;
+			break;
+			
+		// case 4:
+			// // case 4: hide LSB of secret image in MSB of host image -- Change
+			// encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1; // LSB for Secret Image
+			// encodeMask = encodeByteMask << (8 - encodeBits);
+			// decodeByteMask = ~(encodeByteMask << (8 - encodeBits));
+			// hostMask = decodeByteMask << 24 | decodeByteMask << 16 | decodeByteMask << 8 | decodeByteMask;
+			// break;
+// -----
+        case 4:
+            // case 4: hide LSB of secret image in MSB of host image
+            encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1;
+            encodeMask = encodeByteMask << 24 | encodeByteMask << 16 | encodeByteMask << 8 | encodeByteMask;
+            decodeByteMask = (~encodeByteMask) & 0xFF;
+            hostMask = decodeByteMask << 24 | decodeByteMask << 16 | decodeByteMask << 8 | 0xFF;
+            break;
+
+        default:
+            // default: hide MSB of secret image in LSB of host image
+            encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
+            encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+            decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+            hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+            break;
+    }		
+
+
+
+*/
+
 // -------------------------------------------------------------------------------------------------------------
 	// // int decodeByteMask;
 	// // if (useLSB) {
@@ -395,12 +451,12 @@ class Steganography {
 		// // }
 		// // imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
 	// // }
-*/
+
 
 
 // THIS IS WHERE THE MONEY IS
 /* 
- // ORIGINAL
+
     System.out.println("SECRET is NOT LSB (its MSB - orig)");
     int encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
     int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
@@ -414,6 +470,38 @@ class Steganography {
       imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
     }
 */
+
+
+// LSB of Host image:  -- orig
+// imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+
+
+// MSB of Host image: 
+// imageRGB[i] = (imageRGB[i] & encodeMask) | (encodeData << (8 - encodeBits) & hostMask);
+
+/*
+// use the least significant bits of the secret image
+	int secretData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
+	imageRGB[i] = (imageRGB[i] & hostMask) | (secretData & ~hostMask);
+*/
+
+    // for (int i = 0; i < imageRGB.length; i++) {
+		
+	// // Case 1: encode MSB of secret image in LSB of host image
+      // int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
+      // imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+	  
+	// // Case 2: encode MSB of secret image in MSB of host image
+	
+	
+	// // Case 3: encode LSB of secret image in LSB of host image
+	
+	
+	// // Case 4: encode LSB of secret image in MSB of host image
+	
+	
+	
+    // }
 
 
 
