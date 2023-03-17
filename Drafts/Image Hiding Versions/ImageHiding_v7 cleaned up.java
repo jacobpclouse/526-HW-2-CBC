@@ -28,9 +28,9 @@ public class ImageHiding extends JFrame implements ActionListener {
   ImageCanvas hostCanvas;
   ImageCanvas secretCanvas;
 
-  JRadioButton hostIsLSBButton, hostIsMSBButton, secretIsLSBButton, secretIsMSBButton, debugModeIsTrueButton, debugModeIsFalseButton;
-  ButtonGroup hostButtonGroup, secretButtonGroup, debugButtonGroup;
-  public boolean HostIsLSBVar = true, SecretIsLSBVar = true, DebugModeIsOn = false;
+  JRadioButton hostIsLSBButton, hostIsMSBButton, secretIsLSBButton, secretIsMSBButton;
+  ButtonGroup hostButtonGroup, secretButtonGroup;
+  public boolean HostIsLSBVar = true, SecretIsLSBVar = true;
 
   Steganography s;
 
@@ -82,7 +82,7 @@ public class ImageHiding extends JFrame implements ActionListener {
       hostCanvas.repaint();
 
       s = new Steganography(this.getSecretImage());
-      s.getMaskedImage(bits,HostIsLSBVar,DebugModeIsOn);
+      s.getMaskedImage(bits,HostIsLSBVar);
 
       secretCanvas.setImage(s.getImage());
       secretCanvas.repaint();
@@ -102,7 +102,7 @@ public class ImageHiding extends JFrame implements ActionListener {
       hostCanvas.repaint();
 
       s = new Steganography(this.getSecretImage());
-      s.getMaskedImage(bits,HostIsLSBVar,DebugModeIsOn);
+      s.getMaskedImage(bits,HostIsLSBVar);
 
       secretCanvas.setImage(s.getImage());
       secretCanvas.repaint();
@@ -125,18 +125,6 @@ public class ImageHiding extends JFrame implements ActionListener {
       SecretIsLSBVar = false;
       System.out.println("Case 4: SECRETLBS FALSE!");
     }
-
-
-    // Update the boolean variables based on the selected radio buttons -- debug mode
-    if ("debugTrue".equals(actionBoi)) {
-      DebugModeIsOn = true;
-      System.out.println("*RUNNING IN DEBUG MODE*");
-
-    } else if ("debugFalse".equals(actionBoi)) {
-      DebugModeIsOn = false;
-      System.out.println("~Debug mode is not active~");
-
-    } 
   }
 
   public ImageHiding() {
@@ -191,16 +179,6 @@ public class ImageHiding extends JFrame implements ActionListener {
     secretIsMSBButton.setActionCommand("SecretMSB");
     secretIsMSBButton.addActionListener(this);
 
-    // - debug mode button
-    debugModeIsTrueButton = new JRadioButton("Debug Mode Is True", false);
-    debugModeIsTrueButton.setActionCommand("debugTrue");
-    debugModeIsTrueButton.addActionListener(this);
-
-    debugModeIsFalseButton = new JRadioButton("Debug Mode Is False", true);
-    secretIsMSBButton.setActionCommand("debugFalse");
-    secretIsMSBButton.addActionListener(this);
-    // - end debug
-
     hostButtonGroup = new ButtonGroup();
     hostButtonGroup.add(hostIsLSBButton);
     hostButtonGroup.add(hostIsMSBButton);
@@ -209,10 +187,6 @@ public class ImageHiding extends JFrame implements ActionListener {
     secretButtonGroup.add(secretIsLSBButton);
     secretButtonGroup.add(secretIsMSBButton);
 
-    debugButtonGroup = new ButtonGroup();
-    debugButtonGroup.add(debugModeIsTrueButton);
-    debugButtonGroup.add(debugModeIsFalseButton);
-
     imagePanel = new JPanel();
     imagePanel.setLayout(imageGridbag);
     //
@@ -220,9 +194,6 @@ public class ImageHiding extends JFrame implements ActionListener {
     imagePanel.add(hostIsMSBButton);
     imagePanel.add(secretIsLSBButton);
     imagePanel.add(secretIsMSBButton);
-
-    imagePanel.add(debugModeIsTrueButton);
-    imagePanel.add(debugModeIsFalseButton);
 
     //
     JLabel hostImageLabel = new JLabel(" Host image ON LEFT ");
@@ -249,7 +220,7 @@ public class ImageHiding extends JFrame implements ActionListener {
     hostCanvas.setImage(host.getImage());
 
     Steganography secret = new Steganography(this.getSecretImage());
-    secret.getMaskedImage(this.getBits(),HostIsLSBVar,DebugModeIsOn);
+    secret.getMaskedImage(this.getBits(),HostIsLSBVar);
     secretCanvas.setImage(secret.getImage());
 
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -287,44 +258,18 @@ class Steganography {
   // boolean currentHostLSB;
   // boolean currentSecretLSB;
 
-  public void getMaskedImage(int bits, boolean currentHostLSB, boolean isDebugOn) // part 1 HOST
+  public void getMaskedImage(int bits, boolean currentHostLSB) // part 1 HOST
   {
     int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
-/**/  
-
-    if (isDebugOn == false) {
-    // This is how it should be run - pradeep said that we don't need to edit this
-      System.out.println("Original Config: getMaskedImage");
-      int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits);
-      int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
-      for (int i = 0; i < imageRGB.length; i++) {
-        imageRGB[i] = imageRGB[i] & mask;
-      }
-      image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
-    } else {
-        if (currentHostLSB == true) {
-          System.out.println("Debug: HOST is LSB - orig");
-      // // LSB
-          int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits);
-          int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
-          for (int i = 0; i < imageRGB.length; i++) {
-            imageRGB[i] = imageRGB[i] & mask;
-          }
-        image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
-
-        } else if (currentHostLSB == false) {
-          System.out.println("Debug: HOST is NOT LSB (its MSB)");
-      // // MSB - MY CODE
-          int maskBits = (int) (Math.pow(2, bits)) - 1;
-          int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
-          for (int i = 0; i < imageRGB.length; i++) {
-            imageRGB[i] = imageRGB[i] & mask;
-          }
-          image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
-        }
-    }
-
-
+    
+	//System.out.println("HOST is LSB - orig");
+	  // LSB
+	int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits);
+	int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+	for (int i = 0; i < imageRGB.length; i++) {
+		imageRGB[i] = imageRGB[i] & mask;
+	}
+	image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
 	/*
     // // System.out.println("HOST LSB: " + currentHostLSB);
     // // my code
@@ -334,7 +279,25 @@ class Steganography {
     // // System.out.println("(true or false) HOST is LSB: ");
     // // boolean myHostBits = myObj.nextBoolean();
     // // this is working!!! LSB or MSB
- 
+    // if (currentHostLSB == true) {
+      // System.out.println("HOST is LSB - orig");
+      // // LSB
+      // int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits);
+      // int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+      // for (int i = 0; i < imageRGB.length; i++) {
+        // imageRGB[i] = imageRGB[i] & mask;
+      // }
+      // image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+    // } else if (currentHostLSB == false) {
+      // System.out.println("HOST is NOT LSB (its MSB)");
+      // // MSB - MY CODE
+      // int maskBits = (int) (Math.pow(2, bits)) - 1;
+      // int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+      // for (int i = 0; i < imageRGB.length; i++) {
+        // imageRGB[i] = imageRGB[i] & mask;
+      // }
+      // image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+    // }
 	*/
   }
 
