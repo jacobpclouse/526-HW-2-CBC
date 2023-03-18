@@ -366,12 +366,27 @@ class Steganography {
 	int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
     
   // Print out pixel values as we have them now
-  System.out.println("(- -- --- ----)");
+  // System.out.println("(- -- --- ----)");
+  System.out.println("(- -- --- ----- -- --- ---- INTEGER VALUES - -- --- ----- -- --- ----)");
   System.out.println("1) encodeBits: "+encodeBits);
-  System.out.println("2) encodeBits Hex Values: "+(Integer.toHexString(encodeBits)));
-  System.out.println("3) encodeRGB: "+encodeRGB);
-  System.out.println("4) imageRGB: "+imageRGB);
-  System.out.println("5) currentSecretLSB: "+currentSecretLSB);
+  System.out.println("2) encodeRGB: "+encodeRGB);
+  System.out.println("3) imageRGB: "+imageRGB);
+  System.out.println("4) currentSecretLSB: "+currentSecretLSB);
+  System.out.println("(- -- --- ----- -- --- ---- BINARY VALUES - -- --- ----- -- --- ----)");
+  System.out.println("5) encodeBits Binary Values: "+(Integer.toBinaryString(encodeBits)));
+  // convert encode RGB to array
+  String[] encodeRGBBinaryArray = new String[encodeRGB.length];
+  for (int i = 0; i < encodeRGB.length; i++) {
+    encodeRGBBinaryArray[i] = Integer.toBinaryString(encodeRGB[i]);
+  }
+  System.out.println("6) encodeRGB Binary Values: "+encodeRGBBinaryArray);
+  // convert encode RGB to array
+  String[] imageRGBBinaryArray = new String[imageRGB.length];
+  for (int j = 0; j < imageRGB.length; j++) {
+    imageRGBBinaryArray[j] = Integer.toBinaryString(imageRGB[j]);
+  }
+  System.out.println("6) encodeRGB Binary Values: "+imageRGBBinaryArray);
+  // System.out.println("2) encodeBits Hex Values: "+(Integer.toHexString(encodeBits)));
   System.out.println("\n");
 
 
