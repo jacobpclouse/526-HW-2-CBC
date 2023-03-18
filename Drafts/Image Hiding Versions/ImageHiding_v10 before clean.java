@@ -109,8 +109,6 @@ public class ImageHiding extends JFrame implements ActionListener {
     }
 
     // Update the boolean variables based on the selected radio buttons
-    // HOST VAR
-    System.out.println("Action: "+actionBoi);
     if ("HostLSB".equals(actionBoi)) {
       HostIsLSBVar = true;
       System.out.println("Case 1: HOSTLBS TRUE!");
@@ -118,37 +116,27 @@ public class ImageHiding extends JFrame implements ActionListener {
     } else if ("HostMSB".equals(actionBoi)) {
       HostIsLSBVar = false;
       System.out.println("Case 2: HOSTLBS FALSE!");
-    }
-    // } else if ("SecretLSB".equals(actionBoi)) {
-    //   SecretIsLSBVar = true;
-    //   System.out.println("Case 3: SECRETLBS TRUE!");
 
-    // } else if ("SecretMSB".equals(actionBoi)) {
-    //   SecretIsLSBVar = false;
-    //   System.out.println("Case 4: SECRETLBS FALSE!");
-    // }
-
-    // SECRET VAR
-    if ("SecretLSB".equals(actionBoi)) {
-    SecretIsLSBVar = true;
-    System.out.println("Case 3: SECRETLBS TRUE!");
+    } else if ("SecretLSB".equals(actionBoi)) {
+      SecretIsLSBVar = true;
+      System.out.println("Case 3: SECRETLBS TRUE!");
 
     } else if ("SecretMSB".equals(actionBoi)) {
-    SecretIsLSBVar = false;
-    System.out.println("Case 4: SECRETLBS FALSE!");
+      SecretIsLSBVar = false;
+      System.out.println("Case 4: SECRETLBS FALSE!");
     }
 
 
-    // // Update the boolean variables based on the selected radio buttons -- debug mode
-    // if ("debugTrue".equals(actionBoi)) {
-    //   DebugModeIsOn = true;
-    //   System.out.println("*RUNNING IN DEBUG MODE*");
+    // Update the boolean variables based on the selected radio buttons -- debug mode
+    if ("debugTrue".equals(actionBoi)) {
+      DebugModeIsOn = true;
+      System.out.println("*RUNNING IN DEBUG MODE*");
 
-    // } else if ("debugFalse".equals(actionBoi)) {
-    //   DebugModeIsOn = false;
-    //   System.out.println("~Debug mode is not active~");
+    } else if ("debugFalse".equals(actionBoi)) {
+      DebugModeIsOn = false;
+      System.out.println("~Debug mode is not active~");
 
-    // } 
+    } 
   }
 
   public ImageHiding() {
@@ -209,8 +197,8 @@ public class ImageHiding extends JFrame implements ActionListener {
     debugModeIsTrueButton.addActionListener(this);
 
     debugModeIsFalseButton = new JRadioButton("Debug Mode Is False", true);
-    debugModeIsFalseButton.setActionCommand("debugFalse");
-    debugModeIsFalseButton.addActionListener(this);
+    secretIsMSBButton.setActionCommand("debugFalse");
+    secretIsMSBButton.addActionListener(this);
     // - end debug
 
     hostButtonGroup = new ButtonGroup();
