@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.17)  17 MAR 2023 15:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.17)  18 MAR 2023 16:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -212,32 +212,46 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
 (C:\Users\Jake\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-[1
+(Jacob Clouse - ICSI 526 Homework 2.toc)
+\tf@toc=\write3
+\openout3 = `"Jacob Clouse - ICSI 526 Homework 2.toc"'.
+
+ [1
 
 {C:/Users/Jake/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 94--128
+Underfull \hbox (badness 10000) in paragraph at lines 95--97
 
  []
 
-[2] [3] [4] (Jacob Clouse - ICSI 526 Homework 2.aux) ) 
+[2]
+Overfull \hbox (15.02155pt too wide) in paragraph at lines 98--130
+[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 98--130
+
+ []
+
+[3] [4] (Jacob Clouse - ICSI 526 Homework 2.aux) ) 
 Here is how much of TeX's memory you used:
- 2394 strings out of 475385
- 38908 string characters out of 2777379
- 388224 words of memory out of 3000000
- 23759 multiletter control sequences out of 15000+600000
+ 2401 strings out of 475385
+ 39221 string characters out of 2777379
+ 387224 words of memory out of 3000000
+ 23763 multiletter control sequences out of 15000+600000
  478576 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,10n,62p,656b,225s stack positions out of 10000i,1000n,20000p,200000b,80000s
-<C:/Users/Jake/AppData/Lo
-cal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Jake/Ap
-pData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users
-/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C
-:/Users/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12
-.pfb><C:/Users/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
-m/cmr17.pfb><C:/Users/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmti10.pfb><C:/Users/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/pu
-blic/amsfonts/cm/cmtt10.pfb>
-Output written on "Jacob Clouse - ICSI 526 Homework 2.pdf" (4 pages, 117388 byt
+ 55i,10n,62p,715b,225s stack positions out of 10000i,1000n,20000p,200000b,80000s
+<C:/Users/Jake/AppData/Local/
+Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Jake/AppDat
+a/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Jak
+e/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Us
+ers/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb
+><C:/Users/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cm
+r17.pfb><C:/Users/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfont
+s/cm/cmti10.pfb><C:/Users/Jake/AppData/Local/Programs/MiKTeX/fonts/type1/public
+/amsfonts/cm/cmtt10.pfb>
+Output written on "Jacob Clouse - ICSI 526 Homework 2.pdf" (4 pages, 118462 byt
 es).
 PDF statistics:
  50 PDF objects out of 1000 (max. 8388607)

@@ -39,7 +39,8 @@
 \begin{document}
 
 \maketitle
-
+\tableofcontents
+\vspace{0.2in}
 \section{Running CBC and OFB modes:}
 \noindent There are two separate AES files included: One contains my code for CBC mode and the other contains my code for OFB mode. I couldn't get them to work together inside of the same file so I had to split them out into different programs. NOTE: This program was mainly coded on a Linux Mint machine using BASH to compile and Git/Github to host my code (using a private git repo). Running CBC and OFB modes are almost identical, but I have included instructions for both here for the sake of completeness. 
 \vspace{0.2in}
@@ -93,6 +94,7 @@
 \section{My Index of Coincidence Table:}
 \noindent I created this table by feeding the encrypted files into a python IoC Calculator. With ECB, you can clearly see that that the IoC is much higher in the 50\% shared character file vs the 0\% shared file. Even the 25\% shared file is much higher than baseline and it demonstrates that ECB just is not secure enough to warrant use. \\
 Within my CBC implementation, there is very little difference between the results of the 0\%, 25\% and 50\% shared character files. This does an adequate job of diffusing our output and making it look much more like random noise. The same can be said for my OFB implementation too, where we see practically identical levels of IoC across the files.\\
+
 \resizebox{1.0\textwidth}{!}{
 \begin{tabular}{|p{1cm}|c|c|}
 	\hline
@@ -142,12 +144,12 @@ If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. 
 	\begin{verbatim} java ImageHiding \end{verbatim} 
 	If successful, a window should pop up titled \textbf{Jacob Clouse Image Hiding:} that will allow you adjust the MSB and LSB of the pictures. 
 	
-	\item The window that pops up will have all the buttons that the original demo did (ie: the Window that shows you current encoded bits, a + button to add more, a - button to remove more, and two displays showing the host and secret images).\\ \textbf{HOWEVER}, there are now x4 radio buttons present. You can select If you want to use the MSB or LSB of the Host image to hide your values (one or the other, not both). In combination with that, we can chose to encode either the MSB or LSB of the Secret image. Both default to LSB, so you can adjust them to the two choices you need.
+	\item The window that pops up will have all the buttons that the original demo did (ie: the Window that shows you current encoded bits, a + button to add more, a - button to remove more, and two displays showing the host and secret images).\\ \textbf{HOWEVER}, there are now x4 radio buttons present. You can select If you want to use the MSB or LSB of the Host image to hide your values (one or the other, not both). In combination with that, we can chose to encode either the MSB or LSB of the Secret image. Both default to LSB, so you can adjust them to the two choices you need. (DO NOT adjust the debug mode button, leave it set to off)
 	
 	\item After you have made your selection, just hit either the + or - button and it will start encoding using the settings that you have selected.
 \end{enumerate}
 \vspace{0.2in}
-\noindent \textbf{Results of Image Hiding Extension: } I found that the results from my adjustment to the Image Hiding Program seem
+\noindent \textbf{Results of Image Hiding Extension: } I found that the results from my adjustment to the Image Hiding Program were very mixed. This part of the assignment was very difficult to understand at first, but I managed to understand the principle of what we needed to do (ie: adjust how we were shifting the bits based off the scenario) and extend the program accordingly.
 
 
 

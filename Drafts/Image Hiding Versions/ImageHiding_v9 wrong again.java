@@ -339,52 +339,127 @@ class Steganography {
 
   public void encode(BufferedImage encodeImage, int encodeBits, boolean currentSecretLSB, boolean currentHostLSB) // part 2
   {
-	int[] encodeRGB = encodeImage.getRGB(0, 0, encodeImage.getWidth(null), encodeImage.getHeight(null), null, 0, encodeImage.getWidth(null));
-	int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
-
-	//lines that need to be changed are en/decodebytemask and encodedata
-	int encodeByteMask;
-	int encodeMask;
-	if (currentSecretLSB == false){
-		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
-		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-		System.out.println("---- ---- ---- ---- ---- ---- ----");
-		System.out.println("*encodeByteMask MSB: "+encodeByteMask);
-		System.out.println("--");
-		System.out.println("*encodeMask (SHIFT) MSB: "+encodeMask);
-		System.out.println("\n\n\n");
-	} else {
-		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1;
-		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-		System.out.println("---- ---- ---- ---- ---- ---- ----");
-		System.out.println("~encodeByteMask LSB: "+encodeByteMask);
-		System.out.println("**");
-		System.out.println("*encodeMask (SHIFT) LSB: "+encodeMask);
-		System.out.println("\n\n\n");
-	}
-		
-	// int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-
-	int decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
-	int hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
-
-	for (int i = 0; i < imageRGB.length; i++)
-	{
-	int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
-	imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
-	}
-
-  image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
-
-	
+    int[] encodeRGB = encodeImage.getRGB(0, 0, encodeImage.getWidth(null), encodeImage.getHeight(null), null, 0,
+        encodeImage.getWidth(null));
+    int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
 // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 
 
+	// calculate the mask for encoding and decoding based on the case number
+	int encodeByteMask, encodeMask, decodeByteMask, hostMask;
+	if (currentHostLSB == true && currentSecretLSB == false) {
+		// case 1: hide MSB of secret image in LSB of host image
+		encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits); // MSB for Secret Image
+		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+		decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+	} else if (currentHostLSB == false && currentSecretLSB == false) {
+		// case 2: hide MSB of secret image in MSB of host image
+		encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits); // MSB for Secret Image
+		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+		decodeByteMask = 0xFF << (8 - encodeBits);
+		hostMask = decodeByteMask << 24 | decodeByteMask << 16 | decodeByteMask << 8 | decodeByteMask;
+	} else if (currentHostLSB == true && currentSecretLSB == true) {
+		// case 3: hide LSB of secret image in LSB of host image
+		encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1; // LSB for Secret Image
+		encodeMask = encodeByteMask << (8 - encodeBits);
+		decodeByteMask = ~encodeByteMask;
+		hostMask = decodeByteMask << 24 | decodeByteMask << 16 | decodeByteMask << 8 | decodeByteMask;
+	} else if (currentHostLSB == false && currentSecretLSB == true){
+		// case 4: hide LSB of secret image in MSB of host image
+		encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1; // LSB for Secret Image
+		encodeMask = encodeByteMask << 24 | encodeByteMask << 16 | encodeByteMask << 8 | encodeByteMask;
+		decodeByteMask = (~encodeByteMask) & 0xFF;
+		hostMask = decodeByteMask << 24 | decodeByteMask << 16 | decodeByteMask << 8 | 0xFF;
+	} else {
+		System.out.println("HIT THE DEFAULT STATEMENT - SOMETHING IS WRONG");
+		// default: hide MSB of secret image in LSB of host image
+		encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
+		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+		decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+    }		
+	
+    // apply the encoding mask to the secret image pixel data
+    for (int i = 0; i < encodeRGB.length; i++) {
+        encodeRGB[i] = encodeRGB[i] & encodeMask;
+    }
+	
+	// apply the decoding mask to the host image pixel data and encode the secret image data
+    int encodeIndex = 0;
+    for (int i = 0; i < imageRGB.length; i++) {
+        int hostByte = imageRGB[i] >>> 24 & 0xFF;
+        int secretByte = encodeRGB[encodeIndex] >>> (8 - encodeBits) & encodeByteMask;
+
+        // encode the secret byte into the host byte
+        int encodedByte = (secretByte << (8 - encodeBits)) | (hostByte & hostMask);
+        imageRGB[i] = (imageRGB[i] & ~0xFF000000) | (encodedByte << 24);
+
+        // increment the secret index
+        encodeIndex = (encodeIndex + 1) % encodeRGB.length;
+    }
+	
+	// output the result
+    image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+// ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+
+/*
+    System.out.println("SECRET is NOT LSB (its MSB - orig)");
+    int encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
+    int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+
+
 // -------------------------------------------------------------------------------------------------------------
+	// // int decodeByteMask;
+	// // if (useLSB) {
+		// // decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+	// // } else {
+		// // decodeByteMask = encodeByteMask;
+	// // }
+	// // int hostMask;
+	// // if (useMSB) {
+		// // hostMask = 0xFF000000;
+	// // } else {
+		// // hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+	// // }
+
+	// // for (int i = 0; i < imageRGB.length; i++) {
+		// // int encodeData;
+		// // if (useLSB) {
+			// // encodeData = encodeRGB[i] & encodeByteMask;
+		// // } else {
+			// // encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
+		// // }
+		// // if (useMSB) {
+			// // encodeData <<= 24 - encodeBits;
+		// // }
+		// // imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+	// // }
+*/
+
+
+// THIS IS WHERE THE MONEY IS
+/* 
+ // ORIGINAL
+    System.out.println("SECRET is NOT LSB (its MSB - orig)");
+    int encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
+    int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+	
+
+    int decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+    int hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+
+	for (int i = 0; i < imageRGB.length; i++) {
+      int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
+      imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+    }
+*/
+
+
 
 
 /*
-    // // my  original code
+    // // my code
     // // Scanner myObj2 = new Scanner(System.in);
     // // System.out.println("___________________________");
     // // System.out.println("^Part 2: Setting Secret bits^");

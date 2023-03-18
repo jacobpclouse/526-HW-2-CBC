@@ -337,50 +337,67 @@ class Steganography {
 	*/
   }
 
-  public void encode(BufferedImage encodeImage, int encodeBits, boolean currentSecretLSB, boolean currentHostLSB) // part 2
+  public void encode(BufferedImage secretImage, int bits, boolean currentSecretLSB, boolean currentHostLSB) // part 2
   {
-	int[] encodeRGB = encodeImage.getRGB(0, 0, encodeImage.getWidth(null), encodeImage.getHeight(null), null, 0, encodeImage.getWidth(null));
-	int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
+	System.out.println("New Method for shifting masks");
+	int[] secretRGB = secretImage.getRGB(0, 0, secretImage.getWidth(null), secretImage.getHeight(null), null, 0, secretImage.getWidth(null));
+	int[] hostRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
 
-	//lines that need to be changed are en/decodebytemask and encodedata
-	int encodeByteMask;
-	int encodeMask;
-	if (currentSecretLSB == false){
-		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
-		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-		System.out.println("---- ---- ---- ---- ---- ---- ----");
-		System.out.println("*encodeByteMask MSB: "+encodeByteMask);
-		System.out.println("--");
-		System.out.println("*encodeMask (SHIFT) MSB: "+encodeMask);
-		System.out.println("\n\n\n");
+	int secretMask = (int)(Math.pow(2, bits)) - 1 << (8 - bits);
+	// int secretMaskShift = msbSecret ? (8 - bits) : 0;
+	// int secretMaskShift = currentSecretLSB ? 0 : (8 - encodeBits);
+	int secretMaskShift;
+	if (currentSecretLSB = true){
+		secretMaskShift = 0;
 	} else {
-		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1;
-		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-		System.out.println("---- ---- ---- ---- ---- ---- ----");
-		System.out.println("~encodeByteMask LSB: "+encodeByteMask);
-		System.out.println("**");
-		System.out.println("*encodeMask (SHIFT) LSB: "+encodeMask);
-		System.out.println("\n\n\n");
-	}
-		
-	// int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-
-	int decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
-	int hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
-
-	for (int i = 0; i < imageRGB.length; i++)
-	{
-	int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
-	imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+		secretMaskShift = 8 - bits;
 	}
 
-  image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+	int hostMask = ~(secretMask >>> (8 - bits)) & 0xFF;
+	// int hostMaskShift = msbHost ? (8 - bits) : 0;
+	// int hostMaskShift = currentHostLSB ? 0 : (8 - encodeBits);
+	int hostMaskShift;
+	if (currentHostLSB = true){
+		hostMaskShift = 0;
+	} else {
+		hostMaskShift = 8 - bits;
+	}
 
-	
+	for (int i = 0; i < hostRGB.length; i++) {
+		int secretData = (secretRGB[i] & secretMask) >>> secretMaskShift;
+		int hostData = (hostRGB[i] & (hostMask << hostMaskShift)) >>> hostMaskShift;
+		hostRGB[i] = (hostRGB[i] & ~(hostMask << hostMaskShift)) | ((secretData << hostMaskShift) & (hostMask << hostMaskShift)) | (hostData & ~hostMask);
+	}
+
+	image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), hostRGB, 0, image.getWidth(null));
 // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+
+/*
+    System.out.println("SECRET is NOT LSB (its MSB - orig)");
+    int encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
+    int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
 
 
 // -------------------------------------------------------------------------------------------------------------
+
+// THIS IS WHERE THE MONEY IS
+/* 
+ // ORIGINAL
+    System.out.println("SECRET is NOT LSB (its MSB - orig)");
+    int encodeByteMask = (int) (Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
+    int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+	
+
+    int decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+    int hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+
+	for (int i = 0; i < imageRGB.length; i++) {
+      int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
+      imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+    }
+*/
+
+
 
 
 /*
