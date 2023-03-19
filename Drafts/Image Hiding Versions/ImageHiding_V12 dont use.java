@@ -389,12 +389,11 @@ class Steganography {
   // System.out.println("2) encodeBits Hex Values: "+(Integer.toHexString(encodeBits)));
   System.out.println("\n");
 
-// ------------------------------------------------------------------------------------------------------------------
+
 	//lines that need to be changed are en/decodebytemask and encodedata
 	int encodeByteMask;
 	int encodeMask;
 	if (currentSecretLSB == false){
-		// original -- gets the encoded bits and shifts (based on the MSB of the Secret image)
 		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
 		System.out.println("---- ---- ---- ---- ---- ---- ----");
@@ -412,91 +411,22 @@ class Steganography {
 		System.out.println("\n\n\n");
 	}
   else {
-    System.out.println("currentSecretLSB HIT ELSE!!!");
+    System.out.println("HIT ELSE!!!");
     encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
   }
-	// int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;	
-	
-// ------------------------------------------------------------------------------------------------------------------
+		
+	// int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
 
+	int decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+	int hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
 
-	int decodeByteMask;
-	int hostMask;
-// do if -- Orig code - Host LSB is true
-	if (currentHostLSB == true){
-	// orig clears lsb of host to make way for the secret image
-		decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
-		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
-		System.out.println("---- ---- ---- ---- ---- ---- ----");
-		System.out.println("+++decodeByteMask LSB: "+decodeByteMask);
-		System.out.println("++hostMask (SHIFT) LSB: "+hostMask);
-		System.out.println("\n\n\n");
-	
-// do else if Host MSB is true
-	} else if (currentHostLSB == false){
-		decodeByteMask = (encodeByteMask >>> (8 - encodeBits)) & 0xFF;
-		// decodeByteMask = ~(encodeByteMask); // this just turns it yellow
-		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
-		System.out.println("---- ---- ---- ---- ---- ---- ----");
-		System.out.println("^^^decodeByteMask MSB: "+decodeByteMask);
-		System.out.println("^^hostMask (SHIFT) MSB: "+hostMask);
-		System.out.println("\n\n\n");
-	} else {
-		System.out.println("currentHostLSB HIT ELSE!!!");
-		decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
-		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
+	for (int i = 0; i < imageRGB.length; i++)
+	{
+	int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
+	imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
 	}
 
-	// instead of clearing lsb, removed not and so it will clear msb of host image to make way for secret image
-	// decodeByteMask = (encodeByteMask >>> (8 - encodeBits)) & 0xFF;
-
-	
-	if (currentHostLSB == true && currentSecretLSB == false) {
-	// ORIGINAL (MSB OF S TO LSB OF H)	
-		System.out.println("FOR LOOP: MSB OF S TO LSB OF H");
-		for (int i = 0; i < imageRGB.length; i++)
-		{
-			int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
-			imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
-		}
-	} 
-	else if (currentHostLSB == false && currentSecretLSB == false) {
-	// (MSB OF S TO MSB OF H)	
-		System.out.println("FOR LOOP: MSB OF S TO MSB OF H");
-		for (int i = 0; i < imageRGB.length; i++) 
-		{
-            int encodeData = (encodeRGB[i] & encodeMask) << (8 - encodeBits);
-            imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
-        }
-	}
-	else if (currentHostLSB == false && currentSecretLSB == true) {
-	// (LSB OF S TO MSB OF H)
-		System.out.println("FOR LOOP: LSB OF S TO MSB OF H");
-		for (int i = 0; i < imageRGB.length; i++) 
-		{
-            int encodeData = (encodeRGB[i] & encodeMask) << (8 - encodeBits);
-            imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
-        }
-	}
-	else if (currentHostLSB == true && currentSecretLSB == true) {
-	// (LSB OF S TO LSB OF H)
-		System.out.println("FOR LOOP: LSB OF S TO LSB OF H");
-		for (int i = 0; i < imageRGB.length; i++)
-		{
-			int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
-			imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
-		}
-	}
-	else {
-	// If something goes wrong, it defaults to this THE ORIGINAL
-		System.out.println("FOR LOOP: HIT THE DEFAULT, THERE IS A BIG PROBLEM BOI");
-		for (int i = 0; i < imageRGB.length; i++)
-		{
-			int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
-			imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
-		}
-	}
   image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
 
 	
