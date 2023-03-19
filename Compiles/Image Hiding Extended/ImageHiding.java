@@ -138,7 +138,6 @@ public class ImageHiding extends JFrame implements ActionListener {
     System.out.println("Case 4: SECRETLBS FALSE!");
     }
 
-
     // // Update the boolean variables based on the selected radio buttons -- debug mode
     // if ("debugTrue".equals(actionBoi)) {
     //   DebugModeIsOn = true;
@@ -501,11 +500,7 @@ class Steganography {
 
 	
 // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-
-
-// -------------------------------------------------------------------------------------------------------------
-
-
+// Below is my original attempt, it is not correct and do not grade it
 /*
     // // my  original code
     // // Scanner myObj2 = new Scanner(System.in);
@@ -545,7 +540,7 @@ class Steganography {
 
     // }
 */
-	
+// -------------------------------------------------------------------------------------------------------------	
 	
   }
 
