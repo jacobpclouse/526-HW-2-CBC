@@ -143,7 +143,7 @@ Within my CBC implementation, there is very little difference between the result
 }\\
 \vspace{0.2in}\\
 
-\section{Running Extended Image Hiding Program:}
+\section{My Extended Image Hiding Implementation:}
 \subsection{How to Compile \& Run Image Hiding: } 
 \begin{enumerate}
 	\item Make sure you have a working copy of the Java JDK and a text editor on your machine (I use VS Code because of the built in terminal). Again, you should have this if you did the CBC and OFB portions.
@@ -167,7 +167,9 @@ Within my CBC implementation, there is very little difference between the result
 If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. If it equals HostMSB, then we update HostIsLSBVar to equal false. Same thing with secretButtonGroup, where if it equals SecretLSB then SecretIsLSBVar is true and if it equals SecretMSB then SecretIsLSBVar is false. I did originally have a debug button for testing but this has been depreciated in the current release and it performs no function.\\
 \newline
  This part of the assignment was very difficult to understand at first, but I managed to understand the principle of what we needed to do (ie: adjust how we were shifting the bits based off the scenario) mainly by using console print outs for values as they changed and adjusting accordingly. I initially thought that we needed to make changes to the getMaskedImage() function around line 304 (hence all of the comments you see and debug mode). I quickly realized that this did not have the impact that I was looking for and I instead focused my attention onto the encode() function.\\
- The encode() function was where the real meat of the problem was, and I quickly identified that encodeByteMask variable affected primarily the shifting of the secret image bits. In the original code, this takes the MSB of the Secret Image S, so I would just need to reverse it for the cases where we were using LSB of the Secret Image instead. I then realized that the decodeByteMask variable basically clearing the way in the host for encoded bits from encodeByteMask. In the original, it was using the LSB of the Host,
+ The encode() function was where the real meat of the problem was, and I quickly identified that encodeByteMask variable affected primarily the shifting of the secret image bits. In the original code, this takes the MSB of the Secret Image S, so I would just need to reverse it for the cases where we were using LSB of the Secret Image instead. I then realized that the decodeByteMask variable basically clearing the way in the host for encoded bits from encodeByteMask. In the original, it was using the LSB of the Host, so all I needed to do was to reverse this for when the Host needed to be MSB.\\
+ For my cases, I used a simple if-else loop for each case  (there were four cases all together, and they were selected depending on if the HostLSB and SecretLSB variables were true or false). The last real change that I implemented was inside the four loops for each of the cases, we basically had to change how each of the values of the images were combine for each of the combinations. I keep the original function that was given to us basically unchanged.
+ % add a bit more to this when you have a better idea of what is happening in the for loop
  \newline
  There are 4 hiding functions that we need to have implemented in our code:
  \begin{enumerate}

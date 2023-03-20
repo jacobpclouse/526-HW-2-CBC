@@ -5,6 +5,6 @@
 \contentsline {subsection}{\numberline {2.3}How to Compile \& Run OFB Mode: }{3}%
 \contentsline {subsection}{\numberline {2.4}OFB Coding \& Observations: }{3}%
 \contentsline {section}{\numberline {3}My Index of Coincidence Table:}{4}%
-\contentsline {section}{\numberline {4}Running Extended Image Hiding Program:}{4}%
+\contentsline {section}{\numberline {4}My Extended Image Hiding Implementation:}{4}%
 \contentsline {subsection}{\numberline {4.1}How to Compile \& Run Image Hiding: }{4}%
 \contentsline {subsection}{\numberline {4.2}Image Hiding Extension Coding \& Observations: }{5}%
