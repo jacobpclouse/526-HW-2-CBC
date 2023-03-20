@@ -45,7 +45,7 @@
 \noindent Watch my video on my HW2 submission at:  \textbf{https://www.youtube.com/watch?v=gN8QLL6h-Q0}
 \vspace{0.2in}
 \section{My CBC \& OFB Mode Implementations:}
-\noindent There are two separate AES files included: One contains my code for CBC mode and the other contains my code for OFB mode. I couldn't get them to work together inside of the same file so I had to split them out into different programs. NOTE: This program was mainly coded on a Linux Mint machine using BASH to compile and Git/Github to host my code (using a private git repo). Running CBC and OFB modes are almost identical, but I have included instructions for both here for the sake of completeness. 
+\noindent There are two separate AES files included: One contains my code for CBC mode and the other contains my code for OFB mode. I couldn't get them to work together inside of the same file so I had to split them out into different programs. I ended up using the provided AES\_Demo.java file for the GUI of both implementations as I did not need to change anything in that file to implement my code and it was not specified that I could not use it as is. NOTE: This program was mainly coded on a Linux Mint machine using BASH to compile and Git/Github to host my code (using a private git repo). Running CBC and OFB modes are almost identical, but I have included instructions for both here for the sake of completeness. 
 \vspace{0.2in}
 \\
 \subsection{How to Compile \& Run CBC Mode: } 
@@ -167,7 +167,7 @@ Within my CBC implementation, there is very little difference between the result
 If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. If it equals HostMSB, then we update HostIsLSBVar to equal false. Same thing with secretButtonGroup, where if it equals SecretLSB then SecretIsLSBVar is true and if it equals SecretMSB then SecretIsLSBVar is false. I did originally have a debug button for testing but this has been depreciated in the current release and it performs no function.\\
 \newline
  This part of the assignment was very difficult to understand at first, but I managed to understand the principle of what we needed to do (ie: adjust how we were shifting the bits based off the scenario) mainly by using console print outs for values as they changed and adjusting accordingly. I initially thought that we needed to make changes to the getMaskedImage() function around line 304 (hence all of the comments you see and debug mode). I quickly realized that this did not have the impact that I was looking for and I instead focused my attention onto the encode() function.\\
- The encode() function was where the real meat of the problem was, and I quickly identified that encodeByteMask variable affected primarily the shifting of the secret image bits. In the original code, this takes the MSB of the Secret Image S, so I would just need to reverse it for the cases where we were using LSB of the Secret Image instead. 
+ The encode() function was where the real meat of the problem was, and I quickly identified that encodeByteMask variable affected primarily the shifting of the secret image bits. In the original code, this takes the MSB of the Secret Image S, so I would just need to reverse it for the cases where we were using LSB of the Secret Image instead. I then realized that the decodeByteMask variable basically clearing the way in the host for encoded bits from encodeByteMask. In the original, it was using the LSB of the Host,
  \newline
  There are 4 hiding functions that we need to have implemented in our code:
  \begin{enumerate}
@@ -177,6 +177,7 @@ If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. 
  	\item \textbf{LSB of S in MSB of H}
 \end{enumerate}
 I found that there are certain characteristics of the 
+% put what pradeep said about the cases in his office hours.
 \vspace{0.2in} 
 
 
