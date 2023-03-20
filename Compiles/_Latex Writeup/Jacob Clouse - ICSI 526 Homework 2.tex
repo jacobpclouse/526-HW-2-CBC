@@ -163,11 +163,20 @@ Within my CBC implementation, there is very little difference between the result
 \end{enumerate}
 \vspace{0.2in}
 \subsection{Image Hiding Extension Coding \& Observations: } 
-\noindent When I modified this code, I again wanted to reuse the framework that was provided to me in the original application. I made a copy of the original file and added a few touches to the GUI and choices for MSB and LSB. Basically, I added two new radio button groups: hostButtonGroup and secretButtonGroup. These two groups affect the two new boolean variables I created: HostIsLSBVar and SecretIsLSBVar (both are initialized as true). What happens is that we are using these two groups to update the true false values of our two variables. \\ 
+\noindent When I modified this code, I again wanted to reuse the framework that was provided to me in the original application. I made a copy of the original file and added a few touches to the GUI and choices for MSB and LSB. Basically, I added two new radio button groups: hostButtonGroup and secretButtonGroup. These two groups affect the two new boolean variables I created: HostIsLSBVar and SecretIsLSBVar (both are initialized as true). What happens is that we are using these two groups to update the true false values of our two variables. These new values were declared around line 31, the button logic was setup around line 111 and the groups themselves were added to the imagePanel around line 189.\\ 
+If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. If it equals HostMSB, then we update HostIsLSBVar to equal false. Same thing with secretButtonGroup, where if it equals SecretLSB then SecretIsLSBVar is true and if it equals SecretMSB then SecretIsLSBVar is false. I did originally have a debug button for testing but this has been depreciated in the current release and it performs no function.\\
 \newline
-If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. If it equals HostMSB, then we update HostIsLSBVar to equal false. Same thing with secretButtonGroup, where if it equals SecretLSB then SecretIsLSBVar is true and if it equals SecretMSB then SecretIsLSBVar is false. \\
-\newline
-I found that the results from my adjustment to the Image Hiding Program were very mixed. This part of the assignment was very difficult to understand at first, but I managed to understand the principle of what we needed to do (ie: adjust how we were shifting the bits based off the scenario) and extend the program accordingly.\\
+ This part of the assignment was very difficult to understand at first, but I managed to understand the principle of what we needed to do (ie: adjust how we were shifting the bits based off the scenario) mainly by using console print outs for values as they changed and adjusting accordingly. I initially thought that we needed to make changes to the getMaskedImage() function around line 304 (hence all of the comments you see and debug mode). I quickly realized that this did not have the impact that I was looking for and I instead focused my attention onto the encode() function.\\
+ The encode() function was where the real meat of the problem was, and I quickly identified that encodeByteMask variable affected primarily the shifting of the secret image bits. In the original code, this takes the MSB of the Secret Image S, so I would just need to reverse it for the cases where we were using LSB of the Secret Image instead. 
+ \newline
+ There are 4 hiding functions that we need to have implemented in our code:
+ \begin{enumerate}
+ 	\item \textbf{MSB of S in LSB of H} (ORIGINAL)
+ 	\item \textbf{MSB of S in MSB of H}
+ 	\item \textbf{LSB of S in LSB of H}
+ 	\item \textbf{LSB of S in MSB of H}
+\end{enumerate}
+I found that there are certain characteristics of the 
 \vspace{0.2in} 
 
 

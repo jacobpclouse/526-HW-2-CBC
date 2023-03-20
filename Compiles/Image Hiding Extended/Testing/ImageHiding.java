@@ -28,6 +28,7 @@ public class ImageHiding extends JFrame implements ActionListener {
   ImageCanvas hostCanvas;
   ImageCanvas secretCanvas;
 
+  // Added new buttons 
   JRadioButton hostIsLSBButton, hostIsMSBButton, secretIsLSBButton, secretIsMSBButton, debugModeIsTrueButton, debugModeIsFalseButton;
   ButtonGroup hostButtonGroup, secretButtonGroup, debugButtonGroup;
   public boolean HostIsLSBVar = true, SecretIsLSBVar = true, DebugModeIsOn = false;
@@ -107,7 +108,7 @@ public class ImageHiding extends JFrame implements ActionListener {
       secretCanvas.setImage(s.getImage());
       secretCanvas.repaint();
     }
-
+    // MY CODE ------------------------------------------------------------------------
     // Update the boolean variables based on the selected radio buttons
     // HOST VAR
     System.out.println("Action: "+actionBoi);
@@ -185,6 +186,7 @@ public class ImageHiding extends JFrame implements ActionListener {
     GridBagLayout imageGridbag = new GridBagLayout();
     GridBagConstraints imageGBC = new GridBagConstraints();
 
+    // MY CODE ------------------------------------------------------------------------
     // Create the radio buttons and button groups
     hostIsLSBButton = new JRadioButton("Host is LSB", true);
     hostIsLSBButton.setActionCommand("HostLSB");
@@ -202,7 +204,7 @@ public class ImageHiding extends JFrame implements ActionListener {
     secretIsMSBButton.setActionCommand("SecretMSB");
     secretIsMSBButton.addActionListener(this);
 
-    // - debug mode button
+    // - debug mode button -- this has been depreciated 
     debugModeIsTrueButton = new JRadioButton("Debug Mode Is True", false);
     debugModeIsTrueButton.setActionCommand("debugTrue");
     debugModeIsTrueButton.addActionListener(this);
@@ -461,8 +463,10 @@ class Steganography {
 	// ORIGINAL (MSB OF S TO LSB OF H)	
   // ---===---===---===---
 		System.out.println("FOR LOOP: MSB OF S TO LSB OF H");
+    // encodebytemask has to do with the secret image, here it is shifting for MSB
     encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+    // decodebytemask basically clears the way in the host for encoded bits, here it is LSB
     decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
 		for (int i = 0; i < imageRGB.length; i++)
@@ -476,8 +480,10 @@ class Steganography {
 	// (MSB OF S TO MSB OF H)	****	****	****	****	****	****	****	****	****	****	****
   // ---===---===---===---
 		System.out.println("FOR LOOP: MSB OF S TO MSB OF H");
+    // encodebytemask has to do with the secret image, here it is shifting for MSB
     encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+    // decodebytemask basically clears the way in the host for encoded bits, here it is MSB
     decodeByteMask = ~encodeByteMask;
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
 		for (int i = 0; i < imageRGB.length; i++) 
@@ -494,8 +500,10 @@ class Steganography {
 	// (LSB OF S TO MSB OF H)	****	****	****	****	****	****	****	****	****	****	****
   // ---===---===---===---
 		System.out.println("FOR LOOP: LSB OF S TO MSB OF H");
+    /// encodebytemask has to do with the secret image, here it is shifting for LSB
 		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1; // original
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+    // decodebytemask basically clears the way in the host for encoded bits, here it is MSB
     decodeByteMask = ~encodeByteMask;
     // KINDA WORKING 1: 
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
@@ -518,9 +526,10 @@ class Steganography {
 	// (LSB OF S TO LSB OF H)
   // ---===---===---===---
 		System.out.println("FOR LOOP: LSB OF S TO LSB OF H");
+    // encodebytemask has to do with the secret image, here it is shifting for LSB
     encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1; // original
-    // // encodeByteMask = 0x80 >>> (encodeBits - 1);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
+    // decodebytemask basically clears the way in the host for encoded bits, here it is MSB
     decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
 		for (int i = 0; i < imageRGB.length; i++)
