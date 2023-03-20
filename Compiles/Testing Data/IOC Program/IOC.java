@@ -18,18 +18,20 @@ import java.io.IOException;
 public class IOC {
     // computes IOC - this formula / code was found online at: https://www.dcode.fr/index-coincidence
     public static double get_IOC(byte[] ciphertext) {
-        int n = ciphertext.length;
-        int[] freqs = new int[256];
+        int CipherLength = ciphertext.length;
+        int[] frequencys = new int[256];
+        double IndexOfCoincidence = 0;
         for (byte b : ciphertext) {
-            freqs[Byte.toUnsignedInt(b)]++;
+            frequencys[Byte.toUnsignedInt(b)]++;
         }
-        double ic = 0;
-        for (int freq : freqs) 
+        for (int firstPart : frequencys) 
         {
-            ic += freq * (freq - 1);
+            IndexOfCoincidence += firstPart * (firstPart - 1);
         }
-        ic = ic / (n * (n - 1));
-        return ic;
+        IndexOfCoincidence = IndexOfCoincidence / (CipherLength * (CipherLength - 1));
+
+        System.out.println("IOC = " + IndexOfCoincidence);
+        return IndexOfCoincidence;
     }
     
     public static void main(String[] args) throws IOException {
@@ -38,7 +40,6 @@ public class IOC {
     
         // open file, read it, calc IOC and output the results to console
         byte[] ciphertext_bytes = Files.readAllBytes(Paths.get(filename));
-        double ic = get_IOC(ciphertext_bytes);
-        System.out.println("IOC = " + ic);
+        get_IOC(ciphertext_bytes);
     }
 }
