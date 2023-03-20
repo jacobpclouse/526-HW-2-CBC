@@ -1,0 +1,1 @@
+The index of coincidence for ./cbc_0_jbaz_encypted.txt is: 0.003903

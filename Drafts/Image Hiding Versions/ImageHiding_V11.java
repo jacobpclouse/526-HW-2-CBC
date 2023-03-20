@@ -466,18 +466,18 @@ class Steganography {
 		System.out.println("FOR LOOP: MSB OF S TO MSB OF H");
 		for (int i = 0; i < imageRGB.length; i++) 
 		{
-            int encodeData = (encodeRGB[i] & encodeMask) << (8 - encodeBits);
-            imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
-        }
+        int encodeData = (encodeRGB[i] & encodeMask) << (8 - encodeBits);
+        imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+    }
 	}
 	else if (currentHostLSB == false && currentSecretLSB == true) {
 	// (LSB OF S TO MSB OF H)
 		System.out.println("FOR LOOP: LSB OF S TO MSB OF H");
 		for (int i = 0; i < imageRGB.length; i++) 
 		{
-            int encodeData = (encodeRGB[i] & encodeMask) << (8 - encodeBits);
-            imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
-        }
+        int encodeData = (encodeRGB[i] & encodeMask) << (8 - encodeBits);
+        imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+    }
 	}
 	else if (currentHostLSB == true && currentSecretLSB == true) {
 	// (LSB OF S TO LSB OF H)

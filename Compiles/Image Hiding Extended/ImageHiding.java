@@ -402,7 +402,8 @@ class Steganography {
 		System.out.println("*encodeMask (SHIFT) MSB: "+encodeMask);
 		System.out.println("\n\n\n");
 	} else if (currentSecretLSB == true) {
-		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1;
+		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1; // original
+    // encodeByteMask = 0x80 >>> (encodeBits - 1);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
 		System.out.println("---- ---- ---- ---- ---- ---- ----");
 		System.out.println("~~~encodeByteMask LSB: "+encodeByteMask);
