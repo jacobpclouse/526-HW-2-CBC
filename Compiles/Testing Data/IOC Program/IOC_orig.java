@@ -4,14 +4,7 @@ import java.nio.file.Paths;
 import java.io.IOException;
 // import java.util.Arrays;
 
-// adjust the code 
-
-
-
-// REMOVE THE PART WHERE IT SAVES TO FILE!! THEN SEND IT IN
-
-
-
+// adjust the code
 
 // main
 public class IOC {
