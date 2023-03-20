@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2023.1.30)  20 MAR 2023 12:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2023.1.30)  20 MAR 2023 17:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -203,45 +203,70 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@toc=\write3
 \openout3 = `"Jacob Clouse - ICSI 526 Homework 2.toc"'.
 
- [1
+
+Underfull \hbox (badness 10000) in paragraph at lines 48--51
+
+ []
+
+[1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 98--100
+Underfull \hbox (badness 10000) in paragraph at lines 73--77
 
  []
 
 [2]
-Overfull \hbox (15.02155pt too wide) in paragraph at lines 101--133
+Underfull \hbox (badness 10000) in paragraph at lines 102--106
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 110--112
+
+ []
+
+[3]
+Overfull \hbox (15.02155pt too wide) in paragraph at lines 113--145
 [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--133
+Underfull \hbox (badness 10000) in paragraph at lines 113--145
 
  []
 
-[3] [4] (./Jacob Clouse - ICSI 526 Homework 2.aux) ) 
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 166--172
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 166--172
+
+ []
+
+[5] (./Jacob Clouse - ICSI 526 Homework 2.aux) ) 
 Here is how much of TeX's memory you used:
- 2084 strings out of 483183
- 28436 string characters out of 5966292
+ 2085 strings out of 483183
+ 28451 string characters out of 5966292
  264764 words of memory out of 5000000
- 17083 multiletter control sequences out of 15000+600000
- 541655 words of font info for 61 fonts, out of 8000000 for 9000
+ 17084 multiletter control sequences out of 15000+600000
+ 541962 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 30i,10n,27p,701b,218s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt
-10.pfb>
-Output written on "Jacob Clouse - ICSI 526 Homework 2.pdf" (4 pages, 109776 byt
+ 30i,10n,27p,785b,220s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+ti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.p
+fb>
+Output written on "Jacob Clouse - ICSI 526 Homework 2.pdf" (5 pages, 115436 byt
 es).
 PDF statistics:
- 45 PDF objects out of 1000 (max. 8388607)
- 31 compressed objects within 1 object stream
+ 48 PDF objects out of 1000 (max. 8388607)
+ 33 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
