@@ -1,29 +1,31 @@
-// Importing Libraries / Modules
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
-// import java.util.Arrays;
 
-// adjust the code 
+/*
+ * How to compile and run this program:
+ * 1) Open a bash terminal or gitbash terminal in the parent directory of this program
+ * 2) Compile IOC.java with this command: javac IOC.java
+ * 3) Copy the output files that you want to measure the IOC of into the same directory as IOC.java
+ * 4) Run this program with this command: java IOC.java
+ * 5) Paste in the name of the file you want to measure (ex: test_encrypted_file.txt)
+ * 6) The console should print out your IOC value
+ * 
+ */
 
 
-
-// REMOVE THE PART WHERE IT SAVES TO FILE!! THEN SEND IT IN
-
-
-
-
-// main
+// needs to stay named IOC to run
 public class IOC {
-    // --- Function that computes IOC from ciphertext read from binary file ---
-    public static double compute_index_of_coincidence(byte[] ciphertext) {
+    // computes IOC - this formula / code was found online at: https://www.dcode.fr/index-coincidence
+    public static double get_IOC(byte[] ciphertext) {
         int n = ciphertext.length;
         int[] freqs = new int[256];
         for (byte b : ciphertext) {
             freqs[Byte.toUnsignedInt(b)]++;
         }
         double ic = 0;
-        for (int freq : freqs) {
+        for (int freq : freqs) 
+        {
             ic += freq * (freq - 1);
         }
         ic = ic / (n * (n - 1));
@@ -31,20 +33,12 @@ public class IOC {
     }
     
     public static void main(String[] args) throws IOException {
-        String filename = System.console().readLine("Give me the filename: ");
-        String output_name = System.console().readLine("What do you want the output to be called?: ");
+        // get file from user
+        String filename = System.console().readLine("Input filename = ");
     
-        // Read the contents of the file into a byte array
+        // open file, read it, calc IOC and output the results to console
         byte[] ciphertext_bytes = Files.readAllBytes(Paths.get(filename));
-    
-        // Compute the index of coincidence
-        double ic = compute_index_of_coincidence(ciphertext_bytes);
-    
-        // Print the result
-        System.out.println("The index of coincidence is: " + ic);
-    
-        // Save string to file
-        String text = String.format("The index of coincidence for %s is: %f", filename, ic);
-        Files.write(Paths.get("My_IC_" + output_name + ".txt"), text.getBytes());
+        double ic = get_IOC(ciphertext_bytes);
+        System.out.println("IOC = " + ic);
     }
 }

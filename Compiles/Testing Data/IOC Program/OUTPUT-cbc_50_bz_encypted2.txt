@@ -1,0 +1,1 @@
+IOC of cbc_50_bz_encypted.txt = 0.003945

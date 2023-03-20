@@ -1,0 +1,1 @@
+IOC of cbc_0_jbaz_encypted.txt = 0.003903
