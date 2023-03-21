@@ -28,9 +28,6 @@ public class ImageHiding extends JFrame implements ActionListener {
   ImageCanvas hostCanvas;
   ImageCanvas secretCanvas;
 
-  // ------------------------------------------------------------------------------------------------------------------
-  // Added new buttons 
-  // ------------------------------------------------------------------------------------------------------------------
   JRadioButton hostIsLSBButton, hostIsMSBButton, secretIsLSBButton, secretIsMSBButton, debugModeIsTrueButton, debugModeIsFalseButton;
   ButtonGroup hostButtonGroup, secretButtonGroup, debugButtonGroup;
   public boolean HostIsLSBVar = true, SecretIsLSBVar = true, DebugModeIsOn = false;
@@ -110,11 +107,8 @@ public class ImageHiding extends JFrame implements ActionListener {
       secretCanvas.setImage(s.getImage());
       secretCanvas.repaint();
     }
-    
-    // MY CODE 
-    // ------------------------------------------------------------------------------------------------------------------
+
     // Update the boolean variables based on the selected radio buttons
-    // ------------------------------------------------------------------------------------------------------------------
     // HOST VAR
     System.out.println("Action: "+actionBoi);
     if ("HostLSB".equals(actionBoi)) {
@@ -191,10 +185,7 @@ public class ImageHiding extends JFrame implements ActionListener {
     GridBagLayout imageGridbag = new GridBagLayout();
     GridBagConstraints imageGBC = new GridBagConstraints();
 
-    // MY CODE 
-    // ------------------------------------------------------------------------------------------------------------------
     // Create the radio buttons and button groups
-    // ------------------------------------------------------------------------------------------------------------------
     hostIsLSBButton = new JRadioButton("Host is LSB", true);
     hostIsLSBButton.setActionCommand("HostLSB");
     hostIsLSBButton.addActionListener(this);
@@ -211,7 +202,7 @@ public class ImageHiding extends JFrame implements ActionListener {
     secretIsMSBButton.setActionCommand("SecretMSB");
     secretIsMSBButton.addActionListener(this);
 
-    // - debug mode button -- this has been depreciated 
+    // - debug mode button
     debugModeIsTrueButton = new JRadioButton("Debug Mode Is True", false);
     debugModeIsTrueButton.setActionCommand("debugTrue");
     debugModeIsTrueButton.addActionListener(this);
@@ -305,13 +296,15 @@ public class ImageHiding extends JFrame implements ActionListener {
 
 class Steganography {
   BufferedImage image;
+  // boolean currentHostLSB;
+  // boolean currentSecretLSB;
 
-  public void getMaskedImage(int bits, boolean currentHostLSB, boolean isDebugOn)
+  public void getMaskedImage(int bits, boolean currentHostLSB, boolean isDebugOn) // part 1 HOST
   {
     int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
 // _______________________
     // This is how it should be run - pradeep said that we don't need to edit this
-    // Originally Debug mode was implimented here to see if changing: int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits); affected anything, it did not
+    // System.out.println("Original Config: getMaskedImage");
     int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits);
     int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
     for (int i = 0; i < imageRGB.length; i++) {
@@ -319,17 +312,60 @@ class Steganography {
     }
     image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
 // _______________________
+/* This part of Steganography shouldn't affect anything, but I figured I would give it a try just in case, just turn off debug mode to skip this 
+    if (isDebugOn == false) {
+    // This is how it should be run - pradeep said that we don't need to edit this
+      System.out.println("Original Config: getMaskedImage");
+      int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits);
+      int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+      for (int i = 0; i < imageRGB.length; i++) {
+        imageRGB[i] = imageRGB[i] & mask;
+      }
+      image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+    } else {
+        if (currentHostLSB == true) {
+          System.out.println("Debug: HOST is LSB - orig");
+      // // LSB
+          int maskBits = (int) (Math.pow(2, bits)) - 1 << (8 - bits);
+          int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+          for (int i = 0; i < imageRGB.length; i++) {
+            imageRGB[i] = imageRGB[i] & mask;
+          }
+        image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
 
+        } else if (currentHostLSB == false) {
+          System.out.println("Debug: HOST is NOT LSB (its MSB)");
+      // // MSB - MY CODE
+          int maskBits = (int) (Math.pow(2, bits)) - 1;
+          int mask = (maskBits << 24) | (maskBits << 16) | (maskBits << 8) | maskBits;
+          for (int i = 0; i < imageRGB.length; i++) {
+            imageRGB[i] = imageRGB[i] & mask;
+          }
+          image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
+        }
+    }
+ */ 
+
+	/*
+    // // System.out.println("HOST LSB: " + currentHostLSB);
+    // // my code
+    // // Scanner myObj = new Scanner(System.in);
+    // // System.out.println("___________________________");
+    // // System.out.println("*Part 1: Setting Host bits*");
+    // // System.out.println("(true or false) HOST is LSB: ");
+    // // boolean myHostBits = myObj.nextBoolean();
+    // // this is working!!! LSB or MSB
+ 
+	*/
   }
 
   public void encode(BufferedImage encodeImage, int encodeBits, boolean currentSecretLSB, boolean currentHostLSB) // part 2
   {
 	int[] encodeRGB = encodeImage.getRGB(0, 0, encodeImage.getWidth(null), encodeImage.getHeight(null), null, 0, encodeImage.getWidth(null));
 	int[] imageRGB = image.getRGB(0, 0, image.getWidth(null), image.getHeight(null), null, 0, image.getWidth(null));
-  
-  // ------------------------------------------------------------------------------------------------------------------
+    
   // Print out pixel values as we have them now
-  // ------------------------------------------------------------------------------------------------------------------
+  // System.out.println("(- -- --- ----)");
   System.out.println("(- -- --- ----- -- --- ---- INTEGER VALUES - -- --- ----- -- --- ----)");
   System.out.println("1) encodeBits: "+encodeBits);
   System.out.println("2) encodeRGB: "+encodeRGB);
@@ -352,14 +388,10 @@ class Steganography {
   // System.out.println("2) encodeBits Hex Values: "+(Integer.toHexString(encodeBits)));
   System.out.println("\n");
 
-
-
+// ------------------------------------------------------------------------------------------------------------------
 	//lines that need to be changed are en/decodebytemask and encodedata
 	int encodeByteMask;
 	int encodeMask;
-// ------------------------------------------------------------------------------------------------------------------
-// originally, i had the encodeByteMask and encodeMask variables set in this if else loop, but I realized it was easier to have them in the if else loop further down the line
-// ------------------------------------------------------------------------------------------------------------------
 	if (currentSecretLSB == false){
 		// original -- gets the encoded bits and shifts (based on the MSB of the Secret image)
 		// encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
@@ -385,14 +417,12 @@ class Steganography {
 	// 	encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
   // }
 	// int encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;	
-
+	
+// ------------------------------------------------------------------------------------------------------------------
 
 
 	int decodeByteMask;
 	int hostMask;
-// ------------------------------------------------------------------------------------------------------------------
-// originally, i had the decodeByteMask and hostMask variables set in this if else loop, but I realized it was easier to have them in the if else loop further down the line
-// ------------------------------------------------------------------------------------------------------------------
 // do if -- Orig code - Host LSB is true
 	if (currentHostLSB == true){
 	// orig clears lsb of host to make way for the secret image
@@ -426,17 +456,13 @@ class Steganography {
 	// decodeByteMask = (encodeByteMask >>> (8 - encodeBits)) & 0xFF;
 
 // -------------------------------------------------------------------------------------------------------------------------------
-// THIS IS THE MAIN CODE that affects the 4 functions
-// -------------------------------------------------------------------------------------------------------------------------------
 	if (currentHostLSB == true && currentSecretLSB == false) {
   // ---===---===---===---
-	// ORIGINAL (MSB OF S TO LSB OF H)	****	****	****	****	****	****	****	****	****	****	****
+	// ORIGINAL (MSB OF S TO LSB OF H)	
   // ---===---===---===---
 		System.out.println("FOR LOOP: MSB OF S TO LSB OF H");
-    // encodebytemask has to do with the secret image, here it is shifting for MSB
     encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-    // decodebytemask basically clears the way in the host for encoded bits, here it is LSB
     decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
 		for (int i = 0; i < imageRGB.length; i++)
@@ -447,65 +473,69 @@ class Steganography {
 	} 
 	else if (currentHostLSB == false && currentSecretLSB == false) {
   // ---===---===---===---
-	// (MSB OF S TO MSB OF H)	****	****	****	****	****	****	****	****	****	****	****
-  // ---===---===---===--- X
+	// (MSB OF S TO MSB OF H)	
+  // ---===---===---===---
 		System.out.println("FOR LOOP: MSB OF S TO MSB OF H");
-		// encodebytemask has to do with the secret image, here it is shifting for MSB
-		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1;
+    encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-		// decodebytemask basically clears the way in the host for encoded bits, here it is MSB
-		decodeByteMask = ~encodeByteMask & 0xFF;
+    decodeByteMask = ~encodeByteMask;
+		// decodeByteMask = ~(encodeByteMask); // this just turns it yellow
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
 		for (int i = 0; i < imageRGB.length; i++) 
 		{
-			// shifting over so that MSB is lined up with MSB
-			int encodeData = (encodeRGB[i] & encodeMask) << (16 - encodeBits);
-			imageRGB[i] = (imageRGB[i] & ~hostMask) | (encodeData >>> 8);
-		}
+        int encodeData = (encodeRGB[i] & encodeMask) << (8 - encodeBits);
+        imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+    }
 	}
 	else if (currentHostLSB == false && currentSecretLSB == true) {
   // ---===---===---===---
-	// (LSB OF S TO MSB OF H)	****	****	****	****	****	****	****	****	****	****	****
+	// (LSB OF S TO MSB OF H)
   // ---===---===---===---
 		System.out.println("FOR LOOP: LSB OF S TO MSB OF H");
-		// encodebytemask has to do with the secret image, here it is shifting for LSB
-		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1 << (8 - encodeBits); // original 
+		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1; // original
+    // // encodeByteMask = 0x80 >>> (encodeBits - 1);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-		// decodebytemask basically clears the way in the host for encoded bits, here it is MSB
-		decodeByteMask = ~(encodeByteMask << (8 - encodeBits)) & 0xFF;
+    decodeByteMask = ~encodeByteMask;
+		// decodeByteMask = ~(encodeByteMask); // this just turns it yellow
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
 		for (int i = 0; i < imageRGB.length; i++) 
 		{
-			// shifting over so that LSB is lined up with MSB
-			int encodeData = (encodeRGB[i] & encodeMask) << (16 - encodeBits);
-			imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData >>> 8);
-		}
+        int encodeData = (encodeRGB[i] & encodeMask) << (8 - encodeBits);
+        imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+    }
 	}
 	else if (currentHostLSB == true && currentSecretLSB == true) {
   // ---===---===---===---
-	// (LSB OF S TO LSB OF H)	****	****	****	****	****	****	****	****	****	****	****
+	// (LSB OF S TO LSB OF H)
   // ---===---===---===---
 		System.out.println("FOR LOOP: LSB OF S TO LSB OF H");
-		// encodebytemask has to do with the secret image, here it is shifting for LSB
-		encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1; 
+    encodeByteMask = (int)(Math.pow(2, encodeBits)) - 1; // original
+    // // encodeByteMask = 0x80 >>> (encodeBits - 1);
 		encodeMask = (encodeByteMask << 24) | (encodeByteMask << 16) | (encodeByteMask << 8) | encodeByteMask;
-		// decodebytemask basically clears the way in the host for encoded bits, here it is MSB
-		decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
+    decodeByteMask = ~(encodeByteMask >>> (8 - encodeBits)) & 0xFF;
 		hostMask = (decodeByteMask << 24) | (decodeByteMask << 16) | (decodeByteMask << 8) | decodeByteMask;
 		for (int i = 0; i < imageRGB.length; i++)
 		{
-			// shifting over so that LSB is lined up with LSB
 			int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
-			imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData << (8 - encodeBits) & ~hostMask);
+			imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
 		}
 	}
+	// else {
+	// // If something goes wrong, it defaults to this THE ORIGINAL
+	// 	System.out.println("FOR LOOP: HIT THE DEFAULT, THERE IS A BIG PROBLEM BOI");
+	// 	for (int i = 0; i < imageRGB.length; i++)
+	// 	{
+	// 		int encodeData = (encodeRGB[i] & encodeMask) >>> (8 - encodeBits);
+	// 		imageRGB[i] = (imageRGB[i] & hostMask) | (encodeData & ~hostMask);
+	// 	}
+	// }
+
 
   image.setRGB(0, 0, image.getWidth(null), image.getHeight(null), imageRGB, 0, image.getWidth(null));
 
 	
 // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-// Below is some testing i left in to show my thought process, it is not part of the required solution and do not grade it
-// ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+// Below is my original attempt, it is not correct and do not grade it
 /*
     // // my  original code
     // // Scanner myObj2 = new Scanner(System.in);
