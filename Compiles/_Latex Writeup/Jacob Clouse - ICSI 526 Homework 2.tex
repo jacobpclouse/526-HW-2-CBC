@@ -5,7 +5,7 @@
 \usepackage{multirow}
 \usepackage{hhline}
 
-\graphicspath{{./imgs/} {./imgs/Q1/} {./imgs/Q2/}}
+%\graphicspath{{./imgs/} {./imgs/Q1/} {./imgs/Q2/}}
 
 % these are compressed lists to help fit into a 1 page limit
 \newenvironment{enumerate*}%
@@ -171,14 +171,14 @@ If hostButtonGroup equals 'HostLSB', then we update HostIsLSBVar to equal true. 
  For my cases, I used a simple if-else loop for each case  (there were four cases all together, and they were selected depending on if the HostLSB and SecretLSB variables were true or false). The last real change that I implemented was inside the four loops for each of the cases, we basically had to change how each of the values of the images were combine for each of the combinations. I keep the original function that was given to us basically unchanged.
  % add a bit more to this when you have a better idea of what is happening in the for loop
  \newline
- There are 4 hiding functions that we need to have implemented in our code:
+ There are 4 hiding functions that we need to have implemented in our code (listed below). I found that there are certain characteristics were consistent between each of the different combinations in my code, for example: 
  \begin{enumerate}
- 	\item \textbf{MSB of S in LSB of H} (ORIGINAL)
- 	\item \textbf{MSB of S in MSB of H}
- 	\item \textbf{LSB of S in LSB of H}
- 	\item \textbf{LSB of S in MSB of H}
+ 	\item \textbf{MSB of S in LSB of H (ORIGINAL)}: The host degrades slowly as it is only affecting lsb. Host image become apparent around 3 to 4 bits (more rapid as it is MSB).
+ 	\item \textbf{MSB of S in MSB of H}: We see that the changes to the host file are much more rapid than in the original MSB S to LSB H (this is because we are overwriting the MSB of the host), secret image appears just as quickly (again, because we are using MSB).
+ 	\item \textbf{LSB of S in LSB of H}: Host file again degrades slowely (as it is using LSB of H), and the secret image appears much slower than in the original (because it is using LSB).
+ 	\item \textbf{LSB of S in MSB of H}: The changes to the host file are rapid (overwriting the MSB of H), but the secret image does not appear as quickly as it did in the MSB s to MSB h.
 \end{enumerate}
-I found that there are certain characteristics of the 
+
 % put what pradeep said about the cases in his office hours.
 \vspace{0.2in} 
 
